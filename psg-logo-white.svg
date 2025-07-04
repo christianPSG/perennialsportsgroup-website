@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 200" width="1400" height="200">
+  <defs>
+    <style>
+      .psg-letters { 
+        font-family: Arial, sans-serif; 
+        font-weight: 900; 
+        fill: #ffffff; 
+        font-size: 140px;
+        letter-spacing: -2px;
+      }
+      .company-text { 
+        font-family: Arial, sans-serif; 
+        font-weight: 700; 
+        fill: #ffffff; 
+        font-size: 48px; 
+        letter-spacing: 4px;
+      }
+      .separator { 
+        fill: #e2e8f0; 
+      }
+    </style>
+  </defs>
+  
+  <!-- PSG Letters - Bold and prominent -->
+  <text x="20" y="145" class="psg-letters">PSG</text>
+  
+  <!-- Vertical separator line -->
+  <rect x="380" y="30" width="4" height="140" class="separator"/>
+  
+  <!-- Company name -->
+  <text x="420" y="115" class="company-text">PERENNIAL SPORTS GROUP</text>
+</svg>
