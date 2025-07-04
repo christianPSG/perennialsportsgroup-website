@@ -1032,7 +1032,7 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form id="contactForm" action="https://formspree.io/f/xdkogkvo" method="POST">
+                    <form id="contactForm" action="mailto:info@perennialsportsgroup.com" method="post" enctype="text/plain">
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
@@ -1122,7 +1122,7 @@
             }
         });
 
-        // Contact form handling with Formspree
+        // Contact form handling with mailto
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1136,23 +1136,26 @@
                 return;
             }
             
-            // Submit to Formspree
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    alert('Thank you for your message! We will contact you soon at ' + data.email);
-                    this.reset();
-                } else {
-                    alert('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com');
-                }
-            }).catch(error => {
-                alert('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com');
-            });
+            // Create email content
+            const subject = `Contact Form Submission from ${data.name}`;
+            const body = `Name: ${data.name}
+Email: ${data.email}
+Sport/Position: ${data.sport || 'Not specified'}
+School: ${data.school || 'Not specified'}
+Class Year: ${data.class_year || 'Not specified'}
+
+Message:
+${data.message}`;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:info@perennialsportsgroup.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show success message and reset form
+            alert('Your email client will open with the message pre-filled. Please send the email to complete your submission.');
+            this.reset();
         });
 
         // Add fade-in animation on scroll
