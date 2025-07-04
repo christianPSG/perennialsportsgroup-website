@@ -1032,7 +1032,7 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form id="contactForm">
+                    <form id="contactForm" action="https://formspree.io/f/xdkogkvo" method="POST">
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" name="name" class="form-control" placeholder="Your full name" required>
@@ -1122,7 +1122,7 @@
             }
         });
 
-        // Contact form handling (static version - shows alert)
+        // Contact form handling with Formspree
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1136,9 +1136,23 @@
                 return;
             }
             
-            // For static version, show success message and reset form
-            alert('Thank you for your message! We will contact you soon at ' + data.email);
-            this.reset();
+            // Submit to Formspree
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert('Thank you for your message! We will contact you soon at ' + data.email);
+                    this.reset();
+                } else {
+                    alert('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com');
+                }
+            }).catch(error => {
+                alert('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com');
+            });
         });
 
         // Add fade-in animation on scroll
