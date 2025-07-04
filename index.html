@@ -818,6 +818,81 @@
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out;
         }
+
+        /* Notification Popup Styles */
+        .notification-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .notification-popup.success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .notification-popup.error {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .notification-content {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .notification-message {
+            flex: 1;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .notification-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .notification-popup {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1122,22 +1197,77 @@
             }
         });
 
-        // Contact form handling - Let Formspree handle submission naturally
+        // Contact form handling with popup notification
         document.getElementById('contactForm').addEventListener('submit', function(e) {
-            // Get form data for validation only
+            e.preventDefault();
+            
+            // Get form data
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
             // Simple validation
             if (!data.name || !data.email || !data.message) {
-                e.preventDefault();
-                alert('Please fill in all required fields.');
+                showNotification('Please fill in all required fields.', 'error');
                 return;
             }
             
-            // Let the form submit naturally to Formspree
-            // No preventDefault() - allows normal form submission
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit to Formspree with AJAX
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    showNotification('Thank you for your message! We will contact you soon at ' + data.email, 'success');
+                    this.reset();
+                } else {
+                    showNotification('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com', 'error');
+                }
+            }).catch(error => {
+                showNotification('There was a problem sending your message. Please try again or email us directly at info@perennialsportsgroup.com', 'error');
+            }).finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
+        
+        // Notification popup function
+        function showNotification(message, type) {
+            // Remove existing notification if any
+            const existing = document.querySelector('.notification-popup');
+            if (existing) {
+                existing.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification-popup ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-message">${message}</span>
+                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
 
         // Add fade-in animation on scroll
         const observerOptions = {
