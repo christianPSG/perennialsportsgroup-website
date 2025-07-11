@@ -1746,14 +1746,40 @@
                 position: relative !important;
             }
 
-            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
-            * {
+            /* REMOVE PROBLEMATIC SCROLL TRANSITIONS ONLY - PRESERVE HERO STATS */
+            .scroll-section,
+            .scroll-section *,
+            .contact-section,
+            .contact-section * {
                 transition: none !important;
-                animation: none !important;
-                transform: none !important;
                 will-change: auto !important;
                 backface-visibility: visible !important;
                 perspective: none !important;
+            }
+            
+            /* EXPLICITLY PRESERVE HERO STATS VISIBILITY AND ANIMATIONS */
+            .hero-stats,
+            .hero-stats *,
+            .stat-item,
+            .stat-number,
+            .stat-suffix,
+            .stat-text,
+            .stat-label,
+            .hero-tagline,
+            .hero-cta-button {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+                animation: fadeInUp 1s ease-out 0.5s both !important;
+            }
+            
+            .hero-stats .stat-item:nth-child(2) {
+                animation: fadeInUp 1s ease-out 1s both !important;
+            }
+            
+            .hero-cta-button {
+                display: inline-block !important;
+                animation: fadeInUp 1s ease-out 1s both !important;
             }
 
             /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
@@ -2058,14 +2084,40 @@
                 position: relative !important;
             }
 
-            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
-            * {
+            /* REMOVE PROBLEMATIC SCROLL TRANSITIONS ONLY - PRESERVE HERO STATS */
+            .scroll-section,
+            .scroll-section *,
+            .contact-section,
+            .contact-section * {
                 transition: none !important;
-                animation: none !important;
-                transform: none !important;
                 will-change: auto !important;
                 backface-visibility: visible !important;
                 perspective: none !important;
+            }
+            
+            /* EXPLICITLY PRESERVE HERO STATS VISIBILITY AND ANIMATIONS */
+            .hero-stats,
+            .hero-stats *,
+            .stat-item,
+            .stat-number,
+            .stat-suffix,
+            .stat-text,
+            .stat-label,
+            .hero-tagline,
+            .hero-cta-button {
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: flex !important;
+                animation: fadeInUp 1s ease-out 0.5s both !important;
+            }
+            
+            .hero-stats .stat-item:nth-child(2) {
+                animation: fadeInUp 1s ease-out 1s both !important;
+            }
+            
+            .hero-cta-button {
+                display: inline-block !important;
+                animation: fadeInUp 1s ease-out 1s both !important;
             }
 
             /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
