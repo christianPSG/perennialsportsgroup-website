@@ -198,89 +198,7 @@
             }
         }
 
-        /* Hamburger Menu Button */
-        .hamburger-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: rgba(47, 65, 87, 0.9);
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
 
-        .hamburger-btn:hover {
-            background: rgba(47, 65, 87, 1);
-            transform: scale(1.05);
-        }
-
-        .hamburger-line {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: white;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger-btn.active .hamburger-line:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
-
-        /* Navigation */
-        .navbar {
-            background: rgba(47, 65, 87, 0.95);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem 1rem;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100vh;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar.open {
-            left: 0;
-        }
-
-        /* Sidebar Overlay */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
 
         .navbar.scrolled {
             background: rgba(47, 65, 87, 0.98);
@@ -1561,18 +1479,6 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hamburger-btn {
-                top: 15px;
-                left: 15px;
-                padding: 10px;
-            }
-            
-            .hamburger-line {
-                width: 20px;
-                height: 2px;
-                margin: 4px 0;
-            }
-            
             .navbar {
                 width: 280px;
                 left: -280px;
@@ -1980,6 +1886,11 @@
                 flex: none !important;
             }
             
+            /* Hide navigation bar on mobile */
+            .navbar {
+                display: none !important;
+            }
+            
             /* Mobile contact section restructuring for 992px and below */
             .contact-section .scroll-section-container > div:last-child {
                 flex-direction: column !important;
@@ -1993,7 +1904,15 @@
                 display: none !important;
             }
             
-            /* Social media section - center and enhance for mobile */
+            /* Form section - full width on mobile, positioned first */
+            .contact-section .scroll-section-text {
+                width: 100% !important;
+                max-width: 500px !important;
+                flex: none !important;
+                order: 1 !important;
+            }
+            
+            /* Social media section - positioned under form */
             .contact-section .scroll-section-container > div:last-child > div:first-child {
                 width: 100% !important;
                 max-width: 400px !important;
@@ -2002,6 +1921,7 @@
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 1rem !important;
+                order: 2 !important;
             }
             
             /* Social media icons container - enhanced for mobile */
@@ -2014,17 +1934,15 @@
                 border: 2px solid rgba(199, 217, 229, 0.4) !important;
                 backdrop-filter: blur(15px) !important;
             }
-            
-            /* Form section - full width on mobile */
-            .contact-section .scroll-section-text {
-                width: 100% !important;
-                max-width: 500px !important;
-                flex: none !important;
-            }
         }
 
         /* Extra small devices (576px and below) */
         @media (max-width: 576px) {
+            /* Hide navigation bar on mobile */
+            .navbar {
+                display: none !important;
+            }
+            
             .hero-tagline {
                 font-size: 1rem !important;
                 letter-spacing: 1px !important;
@@ -2071,54 +1989,41 @@
                 display: none !important;
             }
             
-            /* Restructure left column for mobile - only social media */
+            /* Form section - full width on mobile, positioned first */
+            .contact-section .scroll-section-text {
+                width: 100% !important;
+                max-width: 500px !important;
+                flex: none !important;
+                order: 1 !important;
+            }
+            
+            /* Social media section - positioned under form */
             .contact-section .scroll-section-container > div:last-child > div:first-child {
+                width: 100% !important;
+                max-width: 400px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 1rem !important;
-                min-height: auto !important;
+                order: 2 !important;
             }
             
-            /* Social media container - full width on mobile */
+            /* Social media icons container - enhanced for mobile */
             .contact-section .scroll-section-container > div:last-child > div:first-child > div:last-child {
                 width: 100% !important;
                 margin-top: 0 !important;
-                background: rgba(0, 0, 0, 0.4) !important;
-                padding: 2rem !important;
+                background: rgba(0, 0, 0, 0.5) !important;
+                padding: 2rem 1rem !important;
                 border-radius: 15px !important;
-                border: 2px solid rgba(199, 217, 229, 0.3) !important;
+                border: 2px solid rgba(199, 217, 229, 0.4) !important;
+                backdrop-filter: blur(15px) !important;
             }
         }
         
     </style>
 </head>
 <body>
-    <!-- Hamburger Menu Button -->
-    <button class="hamburger-btn" id="hamburgerBtn">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-    </button>
-
-    <!-- Navigation Sidebar -->
-    <nav class="navbar" id="navbar">
-        <a class="navbar-brand" href="#home">
-            <img src="psg-logo-metal.png" alt="PSG" class="navbar-logo">
-        </a>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#home">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#contact">Contact</a>
-            </li>
-        </ul>
-    </nav>
-
-    <!-- Overlay for mobile -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -2273,67 +2178,10 @@
                 <p class="scroll-section-description" style="text-align: center; margin-bottom: 0; color: rgba(255, 255, 255, 0.8) !important; opacity: 1 !important; transform: none !important;">Ready to unlock your full potential, maximize your value, and take ownership over your career? Contact us now to secure a data-driven college sports agent and elevate your journey in the new NIL era of college athletics.</p>
             </div>
             
-            <!-- Two Column Layout -->
-            <div style="display: flex; width: 100%; gap: 2rem; align-items: flex-start; min-height: 60vh;">
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; position: relative; z-index: 10; background: transparent; padding: 1rem; min-height: 100%;">
-                    <div style="margin-bottom: 2rem;">
-                        <div class="contact-info-section" style="opacity: 1 !important; visibility: visible !important; transform: none !important;">
-                            <h4 class="contact-info-title" style="text-align: left; color: #C7D9E5 !important; opacity: 1 !important; visibility: visible !important;">Contact Information</h4>
-                            <div class="contact-item" style="justify-content: flex-start; opacity: 1 !important; visibility: visible !important; transform: none !important;">
-                                <i class="bi bi-geo-alt" style="color: #C7D9E5 !important;"></i>
-                                <div style="color: rgba(255, 255, 255, 0.9) !important;">
-                                    <strong style="color: #F4EFEB !important;">Austin, Texas</strong><br>
-                                    Headquarters
-                                </div>
-                            </div>
-                            <div class="contact-item" style="justify-content: flex-start; opacity: 1 !important; visibility: visible !important; transform: none !important;">
-                                <i class="bi bi-envelope" style="color: #C7D9E5 !important;"></i>
-                                <div style="color: rgba(255, 255, 255, 0.9) !important;">
-                                    <strong style="color: #F4EFEB !important;">info@perennialsportsgroup.com</strong><br>
-                                    General Inquiries
-                                </div>
-                            </div>
-                            <div class="contact-item" style="justify-content: flex-start; opacity: 1 !important; visibility: visible !important; transform: none !important;">
-                                <i class="bi bi-telephone" style="color: #C7D9E5 !important;"></i>
-                                <div style="color: rgba(255, 255, 255, 0.9) !important;">
-                                    <strong style="color: #F4EFEB !important;">Phone: 281.904.0332</strong><br>
-                                    General Inquiries
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Map Section -->
-                    <div style="margin-bottom: 1.5rem; flex-grow: 1;">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3445.0234567890123!2d-97.7431!3d30.2672!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644b599a0cc032f%3A0x5d9b464bd7754abd!2s110%20San%20Antonio%20St%2C%20Austin%2C%20TX%2078701!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
-                            width="100%"
-                            height="300"
-                            style="border:0; border-radius: 10px; position: relative; z-index: 5;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    
-                    <!-- Social Media Icons - Positioned below map with enhanced visibility -->
-                    <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; position: relative; z-index: 1000 !important; background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 10px; border: 1px solid rgba(199, 217, 229, 0.2); backdrop-filter: blur(10px); margin-top: auto;">
-                        <a href="https://www.instagram.com/perennialsportsgroup" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
-                            <i class="bi bi-instagram" style="font-size: 1.5rem; color: #C7D9E5 !important;"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@perennialsportsgroup" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: #C7D9E5 !important;">
-                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43V7.56a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.05z"/>
-                            </svg>
-                        </a>
-                        <a href="https://www.x.com/perennialsg" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: #C7D9E5 !important;">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="scroll-section-text">
+            <!-- Mobile-First Vertical Layout -->
+            <div style="display: flex; flex-direction: column; width: 100%; gap: 2rem; align-items: center;">
+                <!-- Contact Form Section - First -->
+                <div class="scroll-section-text" style="width: 100%; max-width: 600px;">
                     <div class="scroll-section-content">
                         <div class="contact-form-section">
                             <form id="contactForm" action="https://formspree.io/f/movwzqvv" method="POST" class="contact-form-styled">
@@ -2366,6 +2214,25 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Social Media Section - Second -->
+                <div style="width: 100%; max-width: 400px; display: flex; justify-content: center; align-items: center;">
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; position: relative; z-index: 1000 !important; background: rgba(0, 0, 0, 0.5); padding: 2rem 1rem; border-radius: 15px; border: 2px solid rgba(199, 217, 229, 0.4); backdrop-filter: blur(15px); width: 100%;">
+                        <a href="https://www.instagram.com/perennialsportsgroup" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
+                            <i class="bi bi-instagram" style="font-size: 1.5rem; color: #C7D9E5 !important;"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@perennialsportsgroup" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: #C7D9E5 !important;">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43V7.56a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.05z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.x.com/perennialsg" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: rgba(199, 217, 229, 0.2) !important; color: #C7D9E5 !important; border-radius: 15px; text-decoration: none; transition: all 0.3s ease; border: 2px solid #C7D9E5 !important; backdrop-filter: blur(10px); position: relative; z-index: 1001 !important; box-shadow: 0 6px 20px rgba(199, 217, 229, 0.3) !important;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: #C7D9E5 !important;">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
             
             <!-- Footer Links and Legal Information -->
@@ -2388,41 +2255,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Hamburger menu functionality
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const navbar = document.getElementById('navbar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const body = document.body;
-
-        function toggleSidebar() {
-            hamburgerBtn.classList.toggle('active');
-            navbar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('active');
-            body.classList.toggle('sidebar-open');
-        }
-
-        function closeSidebar() {
-            hamburgerBtn.classList.remove('active');
-            navbar.classList.remove('open');
-            sidebarOverlay.classList.remove('active');
-            body.classList.remove('sidebar-open');
-        }
-
-        // Event listeners
-        hamburgerBtn.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', closeSidebar);
-
-        // Close sidebar when clicking on navigation links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeSidebar);
-        });
-
-        // Close sidebar with ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && navbar.classList.contains('open')) {
-                closeSidebar();
-            }
-        });
 
         // Smooth scrolling for navigation links - FIXED FOR MOBILE
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2444,17 +2276,6 @@
             });
         });
 
-        // Navbar background on scroll - MOBILE OPTIMIZED
-        if (!isMobileDevice()) {
-            window.addEventListener('scroll', function() {
-                const navbar = document.getElementById('navbar');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }, { passive: true });
-        }
 
         // Contact form handling with popup notification
         document.getElementById('contactForm').addEventListener('submit', function(e) {
