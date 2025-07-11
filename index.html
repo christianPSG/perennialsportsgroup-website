@@ -153,6 +153,32 @@
                 transform: none !important;
             }
             
+            /* Force hero elements to be visible on mobile - override everything */
+            .hero-logo,
+            .hero-tagline,
+            .hero-cta,
+            .hero-stats {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                position: relative !important;
+                z-index: 1000 !important;
+            }
+            
+            /* Ensure logo image is visible */
+            .hero-logo img,
+            .hero-brand-logo {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                max-width: 90vw !important;
+                height: auto !important;
+                margin: 0 auto !important;
+            }
+            
             /* Make non-hero elements immediately visible - no fade-ins or delays */
             .scroll-section h2,
             .scroll-section p,
@@ -2434,6 +2460,62 @@
         // Initialize stats counting animation
         initStatsCountingAnimation();
 
+        // Setup mobile hero animations function - ensure visibility first, then animate
+        function setupMobileHeroAnimations() {
+            // First, ensure all hero elements are definitely visible
+            const heroLogo = document.querySelector('.hero-logo');
+            const heroTagline = document.querySelector('.hero-tagline');
+            const heroCta = document.querySelector('.hero-cta');
+            const heroStats = document.querySelector('.hero-stats');
+            
+            console.log('Mobile hero elements found:', {
+                logo: !!heroLogo,
+                tagline: !!heroTagline,
+                cta: !!heroCta,
+                stats: !!heroStats
+            });
+            
+            // Force visibility and prepare for animation
+            [heroLogo, heroTagline, heroCta, heroStats].forEach(element => {
+                if (element) {
+                    // Force visibility first
+                    element.style.display = 'block';
+                    element.style.visibility = 'visible';
+                    element.style.position = 'relative';
+                    element.style.zIndex = '1000';
+                    
+                    // Then set up for animation
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    element.style.transition = 'all 0.8s ease-out';
+                }
+            });
+            
+            // Trigger fade-ins with proper delays (matching desktop timing)
+            setTimeout(() => {
+                if (heroTagline) {
+                    heroTagline.style.opacity = '1';
+                    heroTagline.style.transform = 'translateY(0)';
+                }
+            }, 500); // 0.5s delay like desktop
+            
+            setTimeout(() => {
+                if (heroLogo) {
+                    heroLogo.style.opacity = '1';
+                    heroLogo.style.transform = 'translateY(0)';
+                    console.log('Logo should be visible now');
+                }
+                if (heroCta) {
+                    heroCta.style.opacity = '1';
+                    heroCta.style.transform = 'translateY(0)';
+                }
+                if (heroStats) {
+                    heroStats.style.opacity = '1';
+                    heroStats.style.transform = 'translateY(0)';
+                }
+            }, 1000); // 1s delay like desktop
+        }
+
         // Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
         let lastScrollTop = 0;
         let scrollTimeout = null;
@@ -2463,10 +2545,10 @@
                 }
             }, { passive: false });
             
-            // Disable all intersection observers on mobile for static mode
-            // All elements should be immediately visible without scroll triggers
+            // Enable hero animations on mobile but disable other intersection observers
+            setupMobileHeroAnimations();
             
-            // Make all sections immediately visible on mobile
+            // Make all sections immediately visible on mobile (except hero)
             document.querySelectorAll('.scroll-section, .contact-section, #mission-vision-section').forEach(section => {
                 section.classList.add('visible');
                 if (section.id === 'mission-vision-section') {
