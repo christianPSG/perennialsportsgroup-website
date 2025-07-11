@@ -4235,8 +4235,13 @@
             return window.innerWidth <= 992 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
         
-        // Dynamic font scaling based on screen size
+        // Dynamic font scaling based on screen size - DISABLED FOR MOBILE TO PREVENT SCROLL SHRINKING
         function adjustFontSizes() {
+            // Skip font scaling on mobile devices to prevent scroll-triggered shrinking
+            if (isMobileDevice()) {
+                return;
+            }
+            
             const screenWidth = window.innerWidth;
             const baseSize = 16; // Base font size in px
             
@@ -4333,9 +4338,14 @@
                 document.documentElement.style.scrollBehavior = 'smooth';
             }
             
-            // Optimize scroll performance
+            // Optimize scroll performance - DISABLED FOR MOBILE TO PREVENT FONT SCALING
             let ticking = false;
             function updateOnScroll() {
+                // Skip scroll updates on mobile to prevent font scaling issues
+                if (isMobileDevice()) {
+                    return;
+                }
+                
                 if (!ticking) {
                     requestAnimationFrame(() => {
                         // Throttled scroll updates for mobile performance
@@ -4345,7 +4355,10 @@
                 }
             }
             
-            window.addEventListener('scroll', updateOnScroll, { passive: true });
+            // Only add scroll listener for desktop devices
+            if (!isMobileDevice()) {
+                window.addEventListener('scroll', updateOnScroll, { passive: true });
+            }
         }
         
         // Mobile-specific particle configuration
@@ -4421,8 +4434,8 @@
             // Debounce resize events
             clearTimeout(window.resizeTimeout);
             window.resizeTimeout = setTimeout(() => {
-                // Adjust font sizes
-                adjustFontSizes();
+                // Skip font size adjustments on mobile to prevent scaling issues
+                // adjustFontSizes(); // DISABLED FOR MOBILE
                 
                 // Optimize charts
                 optimizeChartsForMobile();
@@ -4481,7 +4494,7 @@
             
             // Setup mobile-specific configurations
             setupMobileGestures();
-            adjustFontSizes();
+            // adjustFontSizes(); // DISABLED FOR MOBILE TO PREVENT SCROLL SHRINKING
             initMobileParticles();
             monitorMobilePerformance();
             
