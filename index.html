@@ -1680,14 +1680,17 @@
         
         /* Extra small devices (phones, 576px and down) */
         @media (max-width: 576px) {
-            /* Remove scroll snap for mobile */
+            /* Remove scroll snap for mobile - single continuous page */
             html {
                 scroll-snap-type: none !important;
+                scroll-behavior: auto !important;
             }
             
             .hero,
-            .scroll-section {
+            .scroll-section,
+            .contact-section {
                 scroll-snap-align: none !important;
+                min-height: auto !important;
             }
 
             /* Ensure content is properly contained and centered */
@@ -1949,14 +1952,17 @@
         
         /* Small devices (landscape phones, 576px to 768px) */
         @media (min-width: 577px) and (max-width: 768px) {
-            /* Remove scroll snap for mobile */
+            /* Remove scroll snap for mobile - single continuous page */
             html {
                 scroll-snap-type: none !important;
+                scroll-behavior: auto !important;
             }
             
             .hero,
-            .scroll-section {
+            .scroll-section,
+            .contact-section {
                 scroll-snap-align: none !important;
+                min-height: auto !important;
             }
 
             /* Ensure content is properly contained and centered */
@@ -2174,6 +2180,19 @@
         
         /* Touch-friendly improvements for all mobile devices */
         @media (max-width: 992px) {
+            /* Remove scroll snap for all mobile devices - continuous scrolling */
+            html {
+                scroll-snap-type: none !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .hero,
+            .scroll-section,
+            .contact-section {
+                scroll-snap-align: none !important;
+                min-height: auto !important;
+            }
+            
             /* Larger touch targets */
             .hamburger-btn {
                 padding: 15px !important;
@@ -2484,7 +2503,7 @@
             <!-- Centered Title and Description -->
             <div style="text-align: center; margin-bottom: 2rem; width: 100%;">
                 <h2 class="scroll-section-tagline" style="text-align: center; margin-bottom: 1rem; color: #B0B0B0 !important; opacity: 1 !important; transform: none !important;">Join Perennial Sports Group</h2>
-                <p class="scroll-section-description" style="text-align: center; margin-bottom: 0; color: rgba(255, 255, 255, 0.8) !important; opacity: 1 !important; transform: none !important;">Ready to unlock your full potential, maximize your value, and take ownership over your career? Contact us now to secure a data-driven college sports agent and elevate your journey in the new college athletics NIL era.</p>
+                <p class="scroll-section-description" style="text-align: center; margin-bottom: 0; color: rgba(255, 255, 255, 0.8) !important; opacity: 1 !important; transform: none !important;">Ready to unlock your full potential, maximize your value, and take ownership over your career? Contact us now to secure a data-driven college sports agent and elevate your journey in the new NIL era of college athletics.</p>
             </div>
             
             <!-- Two Column Layout -->
