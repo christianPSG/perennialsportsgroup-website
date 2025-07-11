@@ -65,18 +65,21 @@
             scroll-snap-type: y mandatory;
         }
         
-        /* Remove scroll snap on mobile to prevent scroll conflicts */
+        /* CLEAN MOBILE APPROACH - SINGLE CONTINUOUS SCROLL */
         @media (max-width: 992px) {
+            /* Remove all scroll snap behavior */
             html {
                 scroll-snap-type: none !important;
-                scroll-behavior: auto !important;
+                scroll-behavior: smooth !important;
             }
             
             body {
                 scroll-snap-type: none !important;
                 overflow-y: auto !important;
+                overflow-x: hidden !important;
             }
             
+            /* Make all sections flow naturally */
             .hero,
             .scroll-section,
             .contact-section {
@@ -84,25 +87,17 @@
                 scroll-snap-stop: normal !important;
                 min-height: auto !important;
                 height: auto !important;
+                position: relative !important;
+                overflow: visible !important;
+                padding: 3rem 0 !important;
             }
             
-            /* Remove fixed heights that cause scroll conflicts */
+            /* Ensure hero section is properly sized */
             .hero {
-                min-height: auto !important;
-                height: auto !important;
-                padding: 2rem 0 !important;
-            }
-            
-            .scroll-section {
-                min-height: auto !important;
-                height: auto !important;
-                padding: 2rem 0 !important;
-            }
-            
-            .contact-section {
-                min-height: auto !important;
-                height: auto !important;
-                padding: 2rem 0 !important;
+                min-height: 100vh !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
         }
 
@@ -1717,132 +1712,17 @@
             }
         }
 
-        /* ===== COMPREHENSIVE MOBILE OPTIMIZATIONS ===== */
+        /* ===== CLEAN MOBILE OPTIMIZATIONS ===== */
         
-        /* Extra small devices (phones, 576px and down) */
-        @media (max-width: 576px) {
-            /* COMPLETE SCROLL SNAP REMOVAL FOR MOBILE - CONTINUOUS SCROLLING */
-            html {
-                scroll-snap-type: none !important;
-                scroll-behavior: auto !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-            }
-            
-            body {
-                scroll-snap-type: none !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-                position: relative !important;
-            }
-            
-            .hero,
-            .scroll-section,
-            .contact-section {
-                scroll-snap-align: none !important;
-                scroll-snap-stop: normal !important;
-                min-height: auto !important;
-                height: auto !important;
-                position: relative !important;
-            }
-
-            /* REMOVE PROBLEMATIC SCROLL TRANSITIONS ONLY - PRESERVE HERO STATS */
-            .scroll-section,
-            .scroll-section *,
-            .contact-section,
-            .contact-section * {
-                transition: none !important;
-                will-change: auto !important;
-                backface-visibility: visible !important;
-                perspective: none !important;
-            }
-            
-            /* EXPLICITLY PRESERVE HERO STATS VISIBILITY AND ANIMATIONS */
-            .hero-stats,
-            .hero-stats *,
-            .stat-item,
-            .stat-number,
-            .stat-suffix,
-            .stat-text,
-            .stat-label,
-            .hero-tagline,
-            .hero-cta-button {
-                opacity: 1 !important;
-                visibility: visible !important;
-                display: flex !important;
-                animation: fadeInUp 1s ease-out 0.5s both !important;
-            }
-            
-            .hero-stats .stat-item:nth-child(2) {
-                animation: fadeInUp 1s ease-out 1s both !important;
-            }
-            
-            .hero-cta-button {
-                display: inline-block !important;
-                animation: fadeInUp 1s ease-out 1s both !important;
-            }
-
-            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
-            .hero {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: 100vh !important;
-            }
-
-            .scroll-section {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: auto !important;
-            }
-
-            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
-            .hero-content,
-            .scroll-section-container,
-            .contact-section {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
-                transform: none !important;
-            }
-
-            /* HERO SECTION - CENTER TEXT AND FIX STATS */
-            .hero-content {
-                padding-top: 15vh !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            .hero-tagline {
-                font-size: 1rem !important;
-                letter-spacing: 1px !important;
-                margin: -1rem auto 0 auto !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                width: 90% !important;
-                max-width: 90% !important;
-                text-align: center !important;
-                padding: 0 1rem !important;
-                line-height: 1.3 !important;
-                white-space: normal !important;
-            }
-
-            /* HERO STATS - PROPER CENTERING AND SIZING */
+        /* Mobile devices (992px and below) */
+        @media (max-width: 992px) {
+            /* Hero stats - ensure visibility and proper layout */
             .hero-stats {
                 position: relative !important;
                 bottom: auto !important;
                 left: auto !important;
                 right: auto !important;
                 width: 100% !important;
-                max-width: 100% !important;
                 margin: 2rem auto 0 auto !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -1851,344 +1731,8 @@
                 gap: 1.5rem !important;
                 padding: 1rem !important;
                 text-align: center !important;
-            }
-
-            .hero-stats .stat-item:nth-child(2) {
-                position: relative !important;
-                left: auto !important;
-                transform: none !important;
-            }
-
-            .stat-item {
-                width: 100% !important;
-                max-width: 280px !important;
-                text-align: center !important;
-                margin: 0 auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-
-            .stat-number,
-            .stat-suffix,
-            .stat-text {
-                font-size: 1.2rem !important;
-                font-weight: 600 !important;
-                color: #B0B0B0 !important;
-                opacity: 0.7 !important;
-                line-height: 1.2 !important;
-                text-align: center !important;
-                display: inline !important;
-                margin: 0 !important;
-            }
-
-            .stat-label {
-                font-size: 0.7rem !important;
-                line-height: 1.3 !important;
-                text-align: center !important;
-                margin-top: 0.3rem !important;
-                color: #B0B0B0 !important;
-                text-transform: uppercase !important;
-                letter-spacing: 1px !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-
-            /* CONTENT CONTAINERS - PROPER WIDTH AND SPACING */
-            .hero,
-            .scroll-section {
-                padding: 2rem 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                overflow-x: hidden !important;
-            }
-
-            .scroll-section-container {
-                padding: 0 1.5rem !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 auto !important;
-                box-sizing: border-box !important;
-                overflow-x: hidden !important;
-            }
-
-            /* TEXT SECTIONS - BETTER SPACING AND READABILITY */
-            .scroll-section-tagline {
-                font-size: 1.4rem !important;
-                letter-spacing: 1px !important;
-                text-align: center !important;
-                padding: 0 1rem !important;
-                margin-bottom: 1.5rem !important;
-                line-height: 1.3 !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-            
-            .scroll-section-description {
-                font-size: 1rem !important;
-                line-height: 1.6 !important;
-                padding: 0 1.5rem !important;
-                margin: 1rem 0 !important;
-                text-align: justify !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                hyphens: auto !important;
-            }
-
-            /* MISSION & VISION - EXPAND HORIZONTALLY FOR BETTER READABILITY */
-            #mission-vision-section .scroll-section-container > div:last-child {
-                display: flex !important;
-                flex-direction: column !important;
-                gap: 2rem !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            
-            #mission-vision-section .scroll-section-container > div:last-child > div {
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 1.5rem !important;
-                margin: 0 !important;
-                box-sizing: border-box !important;
-            }
-
-            /* TEXT CONTAINERS - EXPAND TO SCREEN EDGES */
-            #mission-vision-section .scroll-section-container > div:last-child > div .scroll-section-content,
-            #mission-vision-section .scroll-section-container > div:last-child > div .scroll-section-description {
-                padding: 0 1rem !important;
-                margin: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                text-align: justify !important;
-                line-height: 1.6 !important;
-                font-size: 0.95rem !important;
-            }
-
-            /* Reorder grid items for mobile: charts above text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(1) { order: 1; } /* First chart */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(2) { order: 2; } /* First text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(3) { order: 3; } /* Second text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(4) { order: 4; } /* Second chart */
-            
-            /* Chart containers - responsive sizing */
-            .mobility-chart-container {
-                width: 100% !important;
-                height: 220px !important;
-                padding: 1rem !important;
-                margin: 0 auto !important;
-            }
-            
-            .position-chart {
-                width: 100% !important;
-                height: 200px !important;
-                max-width: 100% !important;
-                max-height: 200px !important;
-            }
-            
-            /* Basketball court canvas - smaller on mobile */
-            .scroll-section-canvas {
-                height: 280px !important;
-                width: 100% !important;
-                margin: 1rem 0 !important;
-            }
-            
-            #basketball-canvas {
-                height: 280px !important;
-                width: 100% !important;
-            }
-            
-            /* Contact section - stack vertically */
-            .contact-section .scroll-section-container > div:nth-child(2) {
-                flex-direction: column !important;
-                gap: 2rem !important;
-            }
-            
-            .contact-section .scroll-section-canvas {
-                display: none !important; /* Hide map on mobile */
-            }
-            
-            .contact-section .scroll-section-text {
-                width: 100% !important;
-                flex: none !important;
-            }
-            
-            /* Form improvements */
-            .contact-form-styled {
-                padding: 1.5rem !important;
-                margin: 1rem 0 !important;
-            }
-            
-            .form-control {
-                padding: 0.8rem !important;
-                font-size: 1rem !important;
-                border-radius: 8px !important;
-            }
-            
-            /* Social media icons - show and center on mobile */
-            .contact-section .scroll-section-text > div:last-child {
-                display: flex !important;
-                justify-content: center !important;
-                gap: 1.5rem !important;
-                margin-top: 1.5rem !important;
-                padding: 1rem !important;
-            }
-            
-            /* Footer links - stack on very small screens */
-            .contact-section .scroll-section-container > div:last-child > div:first-child {
-                flex-direction: column !important;
-                gap: 1rem !important;
-                text-align: center !important;
-            }
-
-            /* ENSURE ALL CONTENT EXTENDS TO SCREEN EDGES */
-            .scroll-section-text,
-            .contact-form-styled,
-            .scroll-section-text p,
-            .scroll-section-text div {
-                width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-                overflow-x: hidden !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-        }
-        
-        /* Small devices (landscape phones, 576px to 768px) */
-        @media (min-width: 577px) and (max-width: 768px) {
-            /* COMPLETE SCROLL SNAP REMOVAL FOR MOBILE - CONTINUOUS SCROLLING */
-            html {
-                scroll-snap-type: none !important;
-                scroll-behavior: auto !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-            }
-            
-            body {
-                scroll-snap-type: none !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-                position: relative !important;
-            }
-            
-            .hero,
-            .scroll-section,
-            .contact-section {
-                scroll-snap-align: none !important;
-                scroll-snap-stop: normal !important;
-                min-height: auto !important;
-                height: auto !important;
-                position: relative !important;
-            }
-
-            /* REMOVE PROBLEMATIC SCROLL TRANSITIONS ONLY - PRESERVE HERO STATS */
-            .scroll-section,
-            .scroll-section *,
-            .contact-section,
-            .contact-section * {
-                transition: none !important;
-                will-change: auto !important;
-                backface-visibility: visible !important;
-                perspective: none !important;
-            }
-            
-            /* EXPLICITLY PRESERVE HERO STATS VISIBILITY AND ANIMATIONS */
-            .hero-stats,
-            .hero-stats *,
-            .stat-item,
-            .stat-number,
-            .stat-suffix,
-            .stat-text,
-            .stat-label,
-            .hero-tagline,
-            .hero-cta-button {
                 opacity: 1 !important;
                 visibility: visible !important;
-                display: flex !important;
-                animation: fadeInUp 1s ease-out 0.5s both !important;
-            }
-            
-            .hero-stats .stat-item:nth-child(2) {
-                animation: fadeInUp 1s ease-out 1s both !important;
-            }
-            
-            .hero-cta-button {
-                display: inline-block !important;
-                animation: fadeInUp 1s ease-out 1s both !important;
-            }
-
-            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
-            .hero {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: 100vh !important;
-            }
-
-            .scroll-section {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: auto !important;
-            }
-
-            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
-            .hero-content,
-            .scroll-section-container,
-            .contact-section {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
-                transform: none !important;
-            }
-
-            /* HERO SECTION - CENTER TEXT AND FIX STATS */
-            .hero-content {
-                padding-top: 15vh !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            .hero-tagline {
-                font-size: 1.2rem !important;
-                letter-spacing: 1.5px !important;
-                margin: -1rem auto 0 auto !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                width: 85% !important;
-                max-width: 85% !important;
-                text-align: center !important;
-                padding: 0 1rem !important;
-                line-height: 1.3 !important;
-                white-space: normal !important;
-            }
-
-            /* HERO STATS - PROPER CENTERING AND SIZING */
-            .hero-stats {
-                position: relative !important;
-                bottom: auto !important;
-                left: auto !important;
-                right: auto !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 2rem auto 0 auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                gap: 1.5rem !important;
-                padding: 1rem !important;
-                text-align: center !important;
             }
 
             .hero-stats .stat-item:nth-child(2) {
@@ -2206,6 +1750,8 @@
                 flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
 
             .stat-number,
@@ -2219,6 +1765,7 @@
                 text-align: center !important;
                 display: inline !important;
                 margin: 0 !important;
+                visibility: visible !important;
             }
 
             .stat-label {
@@ -2231,50 +1778,27 @@
                 letter-spacing: 1px !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
+                visibility: visible !important;
             }
 
-            /* CONTENT CONTAINERS - PROPER WIDTH AND SPACING */
-            .hero,
-            .scroll-section {
-                padding: 2rem 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                overflow-x: hidden !important;
-            }
-
-            .scroll-section-container {
-                padding: 0 1.5rem !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 auto !important;
-                box-sizing: border-box !important;
-                overflow-x: hidden !important;
-            }
-
-            /* TEXT SECTIONS - BETTER SPACING AND READABILITY */
-            .scroll-section-tagline {
-                font-size: 1.6rem !important;
+            /* Hero tagline mobile optimization */
+            .hero-tagline {
+                font-size: 1.2rem !important;
                 letter-spacing: 1.5px !important;
+                margin: -1rem auto 0 auto !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                width: 85% !important;
+                max-width: 85% !important;
                 text-align: center !important;
                 padding: 0 1rem !important;
-                margin-bottom: 1.5rem !important;
                 line-height: 1.3 !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-            
-            .scroll-section-description {
-                font-size: 1.1rem !important;
-                line-height: 1.6 !important;
-                padding: 0 1.5rem !important;
-                margin: 1rem 0 !important;
-                text-align: justify !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                hyphens: auto !important;
+                white-space: normal !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
 
-            /* MISSION & VISION - EXPAND HORIZONTALLY FOR BETTER READABILITY */
+            /* Mission & Vision - vertical stacking */
             #mission-vision-section .scroll-section-container > div:last-child {
                 display: flex !important;
                 flex-direction: column !important;
@@ -2293,24 +1817,6 @@
                 box-sizing: border-box !important;
             }
 
-            /* TEXT CONTAINERS - EXPAND TO SCREEN EDGES */
-            #mission-vision-section .scroll-section-container > div:last-child > div .scroll-section-content,
-            #mission-vision-section .scroll-section-container > div:last-child > div .scroll-section-description {
-                padding: 0 1rem !important;
-                margin: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                text-align: justify !important;
-                line-height: 1.6 !important;
-                font-size: 1rem !important;
-            }
-
-            /* Reorder grid items for mobile: charts above text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(1) { order: 1; } /* First chart */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(2) { order: 2; } /* First text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(3) { order: 3; } /* Second text */
-            #mission-vision-section .scroll-section-container > div:last-child > div:nth-child(4) { order: 4; } /* Second chart */
-            
             /* Chart containers - responsive sizing */
             .mobility-chart-container {
                 width: 100% !important;
@@ -2326,7 +1832,7 @@
                 max-height: 230px !important;
             }
             
-            /* Basketball court - medium size */
+            /* Basketball court - mobile size */
             .scroll-section-canvas {
                 height: 320px !important;
                 width: 100% !important;
@@ -2338,303 +1844,54 @@
                 width: 100% !important;
             }
             
-            /* Contact section improvements - Hide map on mobile */
-            .contact-section .scroll-section-container > div:nth-child(2) {
-                flex-direction: column !important;
-                gap: 2rem !important;
-            }
-            
+            /* Contact section - hide map on mobile */
             .contact-section .scroll-section-canvas {
-                display: none !important; /* Hide map on mobile */
+                display: none !important;
             }
             
             .contact-section .scroll-section-text {
                 width: 100% !important;
                 flex: none !important;
             }
+        }
 
-            /* Form improvements */
-            .contact-form-styled {
-                padding: 1.5rem !important;
-                margin: 1rem 0 !important;
-            }
-            
-            .form-control {
-                padding: 0.8rem !important;
+        /* Extra small devices (576px and below) */
+        @media (max-width: 576px) {
+            .hero-tagline {
                 font-size: 1rem !important;
-                border-radius: 8px !important;
-            }
-            
-            /* Social media icons - show and center on mobile */
-            .contact-section .scroll-section-text > div:last-child {
-                display: flex !important;
-                justify-content: center !important;
-                gap: 1.5rem !important;
-                margin-top: 1.5rem !important;
-                padding: 1rem !important;
-            }
-            
-            /* Footer links - stack on screens */
-            .contact-section .scroll-section-container > div:last-child > div:first-child {
-                flex-direction: column !important;
-                gap: 1rem !important;
-                text-align: center !important;
+                letter-spacing: 1px !important;
+                width: 90% !important;
+                max-width: 90% !important;
             }
 
-            /* ENSURE ALL CONTENT EXTENDS TO SCREEN EDGES */
-            .scroll-section-text,
-            .contact-form-styled,
-            .scroll-section-text p,
-            .scroll-section-text div {
-                width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-                overflow-x: hidden !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-            }
-        }
-        
-        /* Medium devices (tablets, 768px to 992px) */
-        @media (min-width: 769px) and (max-width: 992px) {
-            /* Mission & Vision - 2x2 grid but with smaller gaps */
-            #mission-vision-section .scroll-section-container > div:last-child {
-                gap: 1rem !important;
-                width: 95% !important;
-                height: 60vh !important;
-            }
-            
-            .mobility-chart-container {
-                width: 85% !important;
-                height: 85% !important;
-            }
-            
-            /* Text sizing adjustments */
-            .scroll-section-tagline {
-                font-size: 2rem !important;
-            }
-            
-            .scroll-section-description {
-                font-size: 1rem !important;
-            }
-            
-            /* Basketball court - good size for tablets */
-            .scroll-section-canvas {
-                height: 400px !important;
-            }
-        }
-        
-        /* Large devices (desktops, 992px to 1200px) */
-        @media (min-width: 993px) and (max-width: 1200px) {
-            /* Slight adjustments for smaller desktops */
-            #mission-vision-section .scroll-section-container > div:last-child {
-                width: 92% !important;
-                height: 62vh !important;
-            }
-            
-            .scroll-section-container {
-                max-width: 1200px !important;
-            }
-        }
-        
-        /* Touch-friendly improvements for all mobile devices */
-        @media (max-width: 992px) {
-            /* COMPLETE SCROLL SNAP REMOVAL FOR ALL MOBILE DEVICES */
-            html {
-                scroll-snap-type: none !important;
-                scroll-behavior: auto !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-            }
-            
-            body {
-                scroll-snap-type: none !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-                position: relative !important;
-            }
-            
-            .hero,
-            .scroll-section,
-            .contact-section {
-                scroll-snap-align: none !important;
-                scroll-snap-stop: normal !important;
-                min-height: auto !important;
-                height: auto !important;
-                position: relative !important;
-            }
-
-            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
-            * {
-                transition: none !important;
-                animation: none !important;
-                transform: none !important;
-                will-change: auto !important;
-                backface-visibility: visible !important;
-                perspective: none !important;
-            }
-
-            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
-            .hero {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: 100vh !important;
-            }
-
-            .scroll-section {
-                position: relative !important;
-                overflow: visible !important;
-                height: auto !important;
-                min-height: auto !important;
-            }
-
-            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
-            .hero-content,
-            .scroll-section-container,
-            .contact-section {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
-                transform: none !important;
-            }
-            
-            /* Larger touch targets */
-            .hamburger-btn {
-                padding: 15px !important;
-                top: 10px !important;
-                left: 10px !important;
-            }
-            
-            .hamburger-line {
-                width: 28px !important;
-                height: 3px !important;
-                margin: 6px 0 !important;
-            }
-            
-            /* Navigation improvements */
-            .navbar-nav .nav-link {
-                padding: 1.2rem 1.5rem !important;
-                font-size: 1.1rem !important;
-            }
-            
-            /* Service boxes - larger touch targets */
-            .service-header {
-                padding: 1.5rem !important;
-            }
-            
-            .service-title {
+            .stat-number,
+            .stat-suffix,
+            .stat-text {
                 font-size: 1.2rem !important;
             }
-            
-            /* Contact form - larger inputs */
-            .form-control {
-                min-height: 48px !important;
+
+            .stat-label {
+                font-size: 0.7rem !important;
+            }
+
+            .mobility-chart-container {
+                height: 220px !important;
             }
             
-            .contact-submit-btn {
-                min-height: 48px !important;
-                font-size: 1rem !important;
-            }
-            
-            /* Social media icons - larger touch targets */
-            .contact-section .scroll-section-canvas a {
-                width: 60px !important;
-                height: 60px !important;
-            }
-            
-            /* Improved spacing for mobile */
-            .scroll-section {
-                padding: 2rem 0 !important;
-            }
-            
-            .scroll-section-container {
-                padding: 0 1rem !important;
-            }
-            
-            /* Hero stats - better mobile layout */
-            .hero-stats {
-                flex-direction: column !important;
-                gap: 1.5rem !important;
-                position: relative !important;
-                bottom: auto !important;
-                margin-top: 2rem !important;
-            }
-            
-            .hero-stats .stat-item:nth-child(2) {
-                position: relative !important;
-                left: auto !important;
-                transform: none !important;
-            }
-        }
-        
-        /* Landscape orientation optimizations */
-        @media (max-width: 992px) and (orientation: landscape) {
-            /* Adjust hero section for landscape */
-            .hero-content {
-                padding-top: 10vh !important;
-            }
-            
-            .hero-brand-logo {
+            .position-chart {
                 height: 200px !important;
+                max-height: 200px !important;
             }
             
-            .hero-tagline {
-                font-size: 1.6rem !important;
-                margin: -1rem 0 0 0 !important;
-            }
-            
-            /* Mission & Vision - horizontal layout for landscape tablets */
-            #mission-vision-section .scroll-section-container > div:last-child {
-                display: grid !important;
-                grid-template-columns: 1fr 1fr !important;
-                grid-template-rows: 1fr 1fr !important;
-                height: 50vh !important;
-            }
-            
-            /* Basketball court - maintain good size in landscape */
             .scroll-section-canvas {
-                height: 350px !important;
+                height: 280px !important;
+            }
+            
+            #basketball-canvas {
+                height: 280px !important;
             }
         }
         
-        /* High DPI / Retina display optimizations */
-        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-            /* Ensure crisp rendering on high DPI displays */
-            .hero-brand-logo,
-            .navbar-logo {
-                image-rendering: -webkit-optimize-contrast !important;
-                image-rendering: crisp-edges !important;
-            }
-            
-            /* Chart rendering improvements */
-            canvas {
-                image-rendering: -webkit-optimize-contrast !important;
-                image-rendering: crisp-edges !important;
-            }
-        }
-        
-        /* Accessibility improvements for mobile */
-        @media (max-width: 992px) {
-            /* Focus indicators */
-            .nav-link:focus,
-            .form-control:focus,
-            .contact-submit-btn:focus {
-                outline: 3px solid #C7D9E5 !important;
-                outline-offset: 2px !important;
-            }
-            
-            /* Reduced motion for users who prefer it */
-            @media (prefers-reduced-motion: reduce) {
-                * {
-                    animation-duration: 0.01ms !important;
-                    animation-iteration-count: 1 !important;
-                    transition-duration: 0.01ms !important;
-                }
-            }
-        }
     </style>
 </head>
 <body>
