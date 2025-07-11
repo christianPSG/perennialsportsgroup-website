@@ -100,12 +100,18 @@
                 justify-content: center !important;
             }
             
-            /* Mobile stats format - show full numbers instead of k+/m+ */
+            /* Mobile stats format - show k+/m+ to prevent line wrapping */
             .stat-suffix.desktop-only {
-                display: none !important;
+                display: inline !important;
             }
             .stat-suffix.mobile-only {
-                display: inline !important;
+                display: none !important;
+            }
+            
+            /* Ensure stat values stay on one line */
+            .stat-value {
+                white-space: nowrap !important;
+                display: inline-block !important;
             }
             
             /* DISABLE ALL ANIMATIONS AND TRANSITIONS ON MOBILE */
@@ -138,13 +144,57 @@
                 transition: none !important;
             }
             
-            /* Disable hover effects on mobile */
-            *:hover {
+            /* Disable ALL hover, focus, active, and touch effects on mobile */
+            *:hover,
+            *:focus,
+            *:active,
+            *:focus-visible,
+            *:focus-within,
+            *:target {
+                transform: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+            }
+
+            /* Disable touch highlighting and selection */
+            * {
+                -webkit-tap-highlight-color: transparent !important;
+                -webkit-touch-callout: none !important;
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+            }
+
+            /* Prevent any fade effects that could cause white screens */
+            .hero.fade-out,
+            .hero.fade-out::after {
+                opacity: 1 !important;
+            }
+    
+            /* Disable service box and analytics box interactions on mobile */
+            .service-box,
+            .analytics-option {
+                pointer-events: none !important;
+            }
+    
+            .service-box .service-toggle,
+            .analytics-option .option-toggle {
+                display: none !important;
+            }
+    
+            .service-box .service-content,
+            .analytics-option .option-content {
+                max-height: none !important;
+                opacity: 1 !important;
+                padding: 15px !important;
+            }
+    
+            /* Disable all hover effects on mobile */
+            .service-box:hover,
+            .analytics-option:hover {
                 transform: none !important;
                 background: inherit !important;
-                color: inherit !important;
-                border-color: inherit !important;
-                box-shadow: none !important;
             }
         }
 
@@ -1367,7 +1417,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             transition: all 0.3s ease;
@@ -1993,9 +2043,9 @@
                 <a href="#contact" class="hero-cta-button">Contact Us</a>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <div class="stat-number" data-target="100">0</div>
-                        <div class="stat-suffix desktop-only">k+</div>
-                        <div class="stat-suffix mobile-only" style="display: none;">000</div>
+                        <div class="stat-value">
+                            <span class="stat-number" data-target="100">100</span><span class="stat-suffix desktop-only">k+</span><span class="stat-suffix mobile-only" style="display: none;">000</span>
+                        </div>
                         <div class="stat-label">Athletes Analyzed</div>
                     </div>
                     <div class="stat-item">
@@ -2003,9 +2053,9 @@
                         <div class="stat-label">Valuation Metrics</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" data-target="230">0</div>
-                        <div class="stat-suffix desktop-only">m+</div>
-                        <div class="stat-suffix mobile-only" style="display: none;">000000</div>
+                        <div class="stat-value">
+                            <span class="stat-number" data-target="230">230</span><span class="stat-suffix desktop-only">m+</span><span class="stat-suffix mobile-only" style="display: none;">000000</span>
+                        </div>
                         <div class="stat-label">Data Points Processed</div>
                     </div>
                 </div>
@@ -2106,18 +2156,18 @@
                     </div>
                 </div>
                 
+                <!-- WR Chart Container -->
+                <div style="display: flex; align-items: center; justify-content: center;">
+                    <div class="mobility-chart-container" style="gap: 0; padding: 0; width: 80%; height: 80%; display: flex; align-items: center; justify-content: center;">
+                        <canvas id="wr-mobility-chart" class="position-chart" style="width: 100%; height: 100%; max-width: 100%; max-height: 100%;"></canvas>
+                    </div>
+                </div>
+                
                 <!-- Bottom Text Container -->
                 <div style="display: flex; align-items: center; justify-content: center; padding: 1rem;">
                     <div class="scroll-section-content" style="text-align: center; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1rem;">
                         <p class="scroll-section-description" style="margin-bottom: 1rem; font-size: 1rem; line-height: 1.4; max-width: 90%;">By harnessing advanced data analytics and cutting-edge predictive modeling, Perennial Sports Group delivers actionable insights into optimizing athlete performance, enhancing NIL strategies, navigating the transfer portal, and shaping career success in the evolving college athletics landscape.</p>
                         <p class="scroll-section-description" style="margin-bottom: 0; font-size: 1rem; line-height: 1.4; max-width: 90%;">This technology-focused approach enables our agents to provide college athletes with bespoke, evidence-based management and representation that empowers our athletes to find their best fit, unlock their true potential, maximize their value, and take ownership of their athletic career.</p>
-                    </div>
-                </div>
-                
-                <!-- WR Chart Container -->
-                <div style="display: flex; align-items: center; justify-content: center;">
-                    <div class="mobility-chart-container" style="gap: 0; padding: 0; width: 80%; height: 80%; display: flex; align-items: center; justify-content: center;">
-                        <canvas id="wr-mobility-chart" class="position-chart" style="width: 100%; height: 100%; max-width: 100%; max-height: 100%;"></canvas>
                     </div>
                 </div>
             </div>
@@ -2395,18 +2445,21 @@
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
-                }
-            });
-        }, observerOptions);
+        // Disable intersection observers on mobile for static mode
+        if (!isMobileDevice()) {
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
+                });
+            }, observerOptions);
 
-        // Observe all sections
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
+            // Observe all sections
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        }
 
         // Count-up animation for hero stats
         function animateCountUp() {
@@ -2475,21 +2528,15 @@
                 }
             }, { passive: false });
             
-            // Use simple intersection observer for mobile animations
-            const mobileObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        if (entry.target.id === 'mission-vision-section') {
-                            entry.target.classList.add('mission-vision-visible');
-                        }
-                    }
-                });
-            }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+            // Disable all intersection observers on mobile for static mode
+            // All elements should be immediately visible without scroll triggers
             
-            // Observe sections for mobile
+            // Make all sections immediately visible on mobile
             document.querySelectorAll('.scroll-section, .contact-section, #mission-vision-section').forEach(section => {
-                mobileObserver.observe(section);
+                section.classList.add('visible');
+                if (section.id === 'mission-vision-section') {
+                    section.classList.add('mission-vision-visible');
+                }
             });
             
         } else {
@@ -2507,19 +2554,22 @@
                     const scrollTop = window.pageYOffset;
                     const heroHeight = heroSection.offsetHeight;
                     
-                    // Calculate fade effect based on scroll position
-                    const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
-                    const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
-                    
-                    if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
-                        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-                        heroSection.classList.add('fade-out');
-                        const overlay = heroSection.querySelector('::after') || heroSection;
-                        // Use CSS transition for smooth black fade
-                    } else if (scrollTop > fadeEnd) {
-                        heroSection.classList.add('fade-out');
-                    } else {
-                        heroSection.classList.remove('fade-out');
+                    // Disable hero fade effect on mobile devices
+                    if (!isMobileDevice()) {
+                        // Calculate fade effect based on scroll position
+                        const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
+                        const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
+
+                        if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
+                            const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+                            heroSection.classList.add('fade-out');
+                            const overlay = heroSection.querySelector('::after') || heroSection;
+                            // Use CSS transition for smooth black fade
+                        } else if (scrollTop > fadeEnd) {
+                            heroSection.classList.add('fade-out');
+                        } else {
+                            heroSection.classList.remove('fade-out');
+                        }
                     }
                     
                     // Show scroll section content when it comes into view
@@ -2550,33 +2600,20 @@
             }, { passive: true });
         }
         
-        // For mobile, use simpler intersection observer approach
+        // For mobile, disable all intersection observers and make everything immediately visible
         if (isMobileDevice()) {
-            const observerOptions = {
-                threshold: 0.3,
-                rootMargin: '0px 0px -20% 0px'
-            };
-            
-            const sectionObserver = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        if (entry.target.id === 'mission-vision-section') {
-                            entry.target.classList.add('mission-vision-visible');
-                        }
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe sections for mobile
+            // Make all sections immediately visible without any scroll triggers
             document.querySelectorAll('.scroll-section, .contact-section').forEach(section => {
-                sectionObserver.observe(section);
+                section.classList.add('visible');
+                if (section.id === 'mission-vision-section') {
+                    section.classList.add('mission-vision-visible');
+                }
             });
         }
 
         // Initialize Particles.js (disabled on mobile for static mode)
-        if (!isMobileDevice()) {
-            particlesJS('particles-js', {
+        // Enable particles on all devices including mobile
+        particlesJS('particles-js', {
             "particles": {
                 "number": {
                     "value": 80,
@@ -2681,14 +2718,10 @@
             },
             "retina_detect": true
         });
-        } // Close mobile check for particles
 
         // Initialize lighter particles for other sections
         function initLightParticles() {
-            // For mobile devices, disable particles entirely (static mode)
-            if (isMobileDevice()) {
-                return; // No particles on mobile
-            }
+            // Enable light particles on all devices including mobile
             
             // Light particles config - moderately reduced from main hero
             const lightParticlesConfig = {
@@ -3083,6 +3116,14 @@
         }
 
         function setupScrollTrigger() {
+            // Disable ScrollTrigger on mobile for static mode
+            if (isMobileDevice()) {
+                // For mobile, immediately show basketball court without scroll triggers
+                isScrollSectionVisible = true;
+                animatePillarsIn();
+                return;
+            }
+            
             // Register ScrollTrigger plugin
             gsap.registerPlugin(ScrollTrigger);
             
@@ -3205,6 +3246,10 @@
 
         // Toggle function for expandable service boxes
         function toggleBox(element) {
+            // Disable toggle functionality on mobile devices
+            if (isMobileDevice()) {
+                return;
+            }
             element.classList.toggle('expanded');
         }
 
@@ -3243,18 +3288,25 @@
             initChartJsRadar(qbCanvas, 'qb');
             initChartJsRadar(wrCanvas, 'wr');
             
-            // ScrollTrigger for progressive animation
-            ScrollTrigger.create({
-                trigger: "#mission-vision-section",
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: 1,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    updateChartJsRadar(progress, 'qb');
-                    updateChartJsRadar(progress, 'wr');
-                }
-            });
+            // Disable chart ScrollTrigger on mobile for static mode
+            if (!isMobileDevice()) {
+                // ScrollTrigger for progressive animation
+                ScrollTrigger.create({
+                    trigger: "#mission-vision-section",
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    scrub: 1,
+                    onUpdate: (self) => {
+                        const progress = self.progress;
+                        updateChartJsRadar(progress, 'qb');
+                        updateChartJsRadar(progress, 'wr');
+                    }
+                });
+            } else {
+                // For mobile, immediately show charts at full progress
+                updateChartJsRadar(1, 'qb');
+                updateChartJsRadar(1, 'wr');
+            }
         }
 
         function initializeMobilityChart() {
@@ -4190,14 +4242,20 @@
 
         // Setup ScrollTrigger for player profile
         function setupPlayerProfileScrollTrigger() {
-            ScrollTrigger.create({
-                trigger: "#mission-section",
-                start: "top 80%",
-                end: "bottom 20%",
-                onEnter: () => {
-                    initPlayerProfile();
-                }
-            });
+            // Disable player profile ScrollTrigger on mobile for static mode
+            if (!isMobileDevice()) {
+                ScrollTrigger.create({
+                    trigger: "#mission-section",
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    onEnter: () => {
+                        initPlayerProfile();
+                    }
+                });
+            } else {
+                // For mobile, immediately initialize player profile
+                initPlayerProfile();
+            }
         }
 
         // Initialize player profile when page loads
@@ -4359,6 +4417,10 @@
 
         // Complete toggle function for analytics boxes
         function toggleAnalyticsBox(element) {
+            // Disable toggle functionality on mobile devices
+            if (isMobileDevice()) {
+                return;
+            }
             console.log('toggleAnalyticsBox called with:', element);
             console.log('Element dataset:', element.dataset);
             
