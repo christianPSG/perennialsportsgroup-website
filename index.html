@@ -64,6 +64,24 @@
             scroll-behavior: smooth;
             scroll-snap-type: y mandatory;
         }
+        
+        /* Remove scroll snap on mobile to prevent scroll conflicts */
+        @media (max-width: 992px) {
+            html {
+                scroll-snap-type: none !important;
+            }
+            
+            body {
+                scroll-snap-type: none !important;
+            }
+            
+            .hero,
+            .scroll-section,
+            .contact-section {
+                scroll-snap-align: none !important;
+                scroll-snap-stop: normal !important;
+            }
+        }
 
         /* Hamburger Menu Button */
         .hamburger-btn {
