@@ -92,12 +92,38 @@
                 padding: 3rem 0 !important;
             }
             
-            /* Ensure hero section is properly sized */
+            /* Ensure hero section is properly sized and positioned higher */
             .hero {
                 min-height: 100vh !important;
                 display: flex !important;
-                align-items: center !important;
+                align-items: flex-start !important;
                 justify-content: center !important;
+                padding-top: 2rem !important;
+            }
+            
+            .hero-content {
+                padding-top: 1rem !important;
+                margin-top: 0 !important;
+            }
+            
+            .hero-logo {
+                margin-top: 1rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .hero-tagline {
+                margin-top: 1rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .hero-cta {
+                margin-top: 1.5rem !important;
+                margin-bottom: 2rem !important;
+            }
+            
+            .hero-stats {
+                margin-top: 2rem !important;
+                padding-top: 1rem !important;
             }
             
             /* Mobile stats format - show k+/m+ to prevent line wrapping */
@@ -2375,19 +2401,10 @@
         function animateCountUp() {
             const counters = document.querySelectorAll('.stat-number[data-target]');
             
-            // For mobile devices, show final values immediately (static mode)
-            if (isMobileDevice()) {
-                counters.forEach(counter => {
-                    const target = parseInt(counter.getAttribute('data-target'));
-                    counter.textContent = target;
-                });
-                return;
-            }
-            
-            // Desktop animation
+            // Enable counting animation on both mobile and desktop
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 1000; // 2 seconds
+                const duration = isMobileDevice() ? 1500 : 1000; // Slightly longer on mobile for better visibility
                 const increment = target / (duration / 16); // 60fps
                 let current = 0;
                 
@@ -2402,12 +2419,22 @@
             });
         }
 
-        // Start count-up animation after stats appear (1.5s delay for desktop, immediate for mobile)
-        if (isMobileDevice()) {
-            animateCountUp(); // Immediate for mobile
-        } else {
-            setTimeout(animateCountUp, 1500); // Delayed for desktop
+        // Start count-up animation with IntersectionObserver for better mobile performance
+        function initStatsCountingAnimation() {
+            const statsSection = document.querySelector('.hero-stats');
+            if (!statsSection) return;
+            
+            if (isMobileDevice()) {
+                // For mobile, start animation immediately since stats are visible
+                setTimeout(animateCountUp, 500); // Small delay to ensure elements are rendered
+            } else {
+                // For desktop, use the existing delayed approach
+                setTimeout(animateCountUp, 1500);
+            }
         }
+
+        // Initialize stats counting animation
+        initStatsCountingAnimation();
 
         // Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
         let lastScrollTop = 0;
