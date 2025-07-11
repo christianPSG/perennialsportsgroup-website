@@ -99,6 +99,14 @@
                 align-items: center !important;
                 justify-content: center !important;
             }
+            
+            /* Mobile stats format - show full numbers instead of k+/m+ */
+            .stat-suffix.desktop-only {
+                display: none !important;
+            }
+            .stat-suffix.mobile-only {
+                display: inline !important;
+            }
         }
 
         /* Hamburger Menu Button */
@@ -1947,7 +1955,8 @@
                 <div class="hero-stats">
                     <div class="stat-item">
                         <div class="stat-number" data-target="100">0</div>
-                        <div class="stat-suffix">k+</div>
+                        <div class="stat-suffix desktop-only">k+</div>
+                        <div class="stat-suffix mobile-only" style="display: none;">000</div>
                         <div class="stat-label">Athletes Analyzed</div>
                     </div>
                     <div class="stat-item">
@@ -1956,7 +1965,8 @@
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" data-target="230">0</div>
-                        <div class="stat-suffix">m+</div>
+                        <div class="stat-suffix desktop-only">m+</div>
+                        <div class="stat-suffix mobile-only" style="display: none;">000000</div>
                         <div class="stat-label">Data Points Processed</div>
                     </div>
                 </div>
@@ -2386,9 +2396,51 @@
         // Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
         let lastScrollTop = 0;
         let scrollTimeout = null;
+        let isScrolling = false;
         
-        // Only add scroll listeners for desktop to prevent mobile scroll jumping
-        if (!isMobileDevice()) {
+        // Additional scroll jump prevention for mobile
+        if (isMobileDevice()) {
+            // Prevent any programmatic scrolling on mobile
+            let preventScroll = false;
+            
+            // Override any scroll restoration
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            
+            // Prevent scroll jumping from hash changes
+            window.addEventListener('hashchange', function(e) {
+                e.preventDefault();
+                return false;
+            }, { passive: false });
+            
+            // Prevent scroll jumping from focus events
+            document.addEventListener('focusin', function(e) {
+                if (preventScroll) {
+                    e.preventDefault();
+                    e.target.blur();
+                }
+            }, { passive: false });
+            
+            // Use simple intersection observer for mobile animations
+            const mobileObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        if (entry.target.id === 'mission-vision-section') {
+                            entry.target.classList.add('mission-vision-visible');
+                        }
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+            
+            // Observe sections for mobile
+            document.querySelectorAll('.scroll-section, .contact-section, #mission-vision-section').forEach(section => {
+                mobileObserver.observe(section);
+            });
+            
+        } else {
+            // Only add scroll listeners for desktop to prevent mobile scroll jumping
             window.addEventListener('scroll', function() {
                 // Clear any existing timeout to prevent scroll jumping
                 if (scrollTimeout) {
