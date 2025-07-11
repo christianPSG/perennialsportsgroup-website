@@ -1979,6 +1979,48 @@
                 width: 100% !important;
                 flex: none !important;
             }
+            
+            /* Mobile contact section restructuring for 992px and below */
+            .contact-section .scroll-section-container > div:last-child {
+                flex-direction: column !important;
+                gap: 2rem !important;
+                align-items: center !important;
+            }
+            
+            /* Hide contact information text and map on mobile */
+            .contact-section .contact-info-section,
+            .contact-section iframe {
+                display: none !important;
+            }
+            
+            /* Social media section - center and enhance for mobile */
+            .contact-section .scroll-section-container > div:last-child > div:first-child {
+                width: 100% !important;
+                max-width: 400px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 1rem !important;
+            }
+            
+            /* Social media icons container - enhanced for mobile */
+            .contact-section .scroll-section-container > div:last-child > div:first-child > div:last-child {
+                width: 100% !important;
+                margin-top: 0 !important;
+                background: rgba(0, 0, 0, 0.5) !important;
+                padding: 2rem 1rem !important;
+                border-radius: 15px !important;
+                border: 2px solid rgba(199, 217, 229, 0.4) !important;
+                backdrop-filter: blur(15px) !important;
+            }
+            
+            /* Form section - full width on mobile */
+            .contact-section .scroll-section-text {
+                width: 100% !important;
+                max-width: 500px !important;
+                flex: none !important;
+            }
         }
 
         /* Extra small devices (576px and below) */
@@ -2015,6 +2057,38 @@
             
             #basketball-canvas {
                 height: 280px !important;
+            }
+            
+            /* Mobile contact section - vertical stacking of form and social media only */
+            .contact-section .scroll-section-container > div:last-child {
+                flex-direction: column !important;
+                gap: 2rem !important;
+            }
+            
+            /* Hide contact information and map on mobile */
+            .contact-section .contact-info-section,
+            .contact-section iframe {
+                display: none !important;
+            }
+            
+            /* Restructure left column for mobile - only social media */
+            .contact-section .scroll-section-container > div:last-child > div:first-child {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 1rem !important;
+                min-height: auto !important;
+            }
+            
+            /* Social media container - full width on mobile */
+            .contact-section .scroll-section-container > div:last-child > div:first-child > div:last-child {
+                width: 100% !important;
+                margin-top: 0 !important;
+                background: rgba(0, 0, 0, 0.4) !important;
+                padding: 2rem !important;
+                border-radius: 15px !important;
+                border: 2px solid rgba(199, 217, 229, 0.3) !important;
             }
         }
         
