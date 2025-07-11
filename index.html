@@ -107,6 +107,45 @@
             .stat-suffix.mobile-only {
                 display: inline !important;
             }
+            
+            /* DISABLE ALL ANIMATIONS AND TRANSITIONS ON MOBILE */
+            * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+            
+            /* Make all elements immediately visible - no fade-ins or delays */
+            .hero-stats,
+            .stat-item,
+            .stat-number,
+            .stat-suffix,
+            .stat-text,
+            .stat-label,
+            .hero-tagline,
+            .hero-cta-button,
+            .scroll-section h2,
+            .scroll-section p,
+            .scroll-section-tagline,
+            .scroll-section-description,
+            .contact-item,
+            .contact-form-styled,
+            .position-chart {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: none !important;
+                animation: none !important;
+                transition: none !important;
+            }
+            
+            /* Disable hover effects on mobile */
+            *:hover {
+                transform: none !important;
+                background: inherit !important;
+                color: inherit !important;
+                border-color: inherit !important;
+                box-shadow: none !important;
+            }
         }
 
         /* Hamburger Menu Button */
@@ -2373,6 +2412,16 @@
         function animateCountUp() {
             const counters = document.querySelectorAll('.stat-number[data-target]');
             
+            // For mobile devices, show final values immediately (static mode)
+            if (isMobileDevice()) {
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    counter.textContent = target;
+                });
+                return;
+            }
+            
+            // Desktop animation
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
                 const duration = 1000; // 2 seconds
@@ -2390,8 +2439,12 @@
             });
         }
 
-        // Start count-up animation after stats appear (1.5s delay)
-        setTimeout(animateCountUp, 1500);
+        // Start count-up animation after stats appear (1.5s delay for desktop, immediate for mobile)
+        if (isMobileDevice()) {
+            animateCountUp(); // Immediate for mobile
+        } else {
+            setTimeout(animateCountUp, 1500); // Delayed for desktop
+        }
 
         // Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
         let lastScrollTop = 0;
@@ -2521,8 +2574,9 @@
             });
         }
 
-        // Initialize Particles.js
-        particlesJS('particles-js', {
+        // Initialize Particles.js (disabled on mobile for static mode)
+        if (!isMobileDevice()) {
+            particlesJS('particles-js', {
             "particles": {
                 "number": {
                     "value": 80,
@@ -2627,9 +2681,15 @@
             },
             "retina_detect": true
         });
+        } // Close mobile check for particles
 
         // Initialize lighter particles for other sections
         function initLightParticles() {
+            // For mobile devices, disable particles entirely (static mode)
+            if (isMobileDevice()) {
+                return; // No particles on mobile
+            }
+            
             // Light particles config - moderately reduced from main hero
             const lightParticlesConfig = {
                 "particles": {
@@ -3072,6 +3132,16 @@
         }
 
         function animatePillarsIn() {
+            // For mobile devices, show pillars immediately at full scale (static mode)
+            if (isMobileDevice()) {
+                pillars.forEach((pillarObj, index) => {
+                    pillarObj.pillar.scale.y = 1;
+                    pillarObj.glow.scale.y = 1;
+                });
+                return;
+            }
+            
+            // Desktop animation
             pillars.forEach((pillarObj, index) => {
                 gsap.fromTo(pillarObj.pillar.scale,
                     { y: 0 },
@@ -3394,7 +3464,7 @@
                         }
                     },
                     animation: {
-                        duration: 2000,
+                        duration: isMobileDevice() ? 0 : 2000, // No animation on mobile
                         easing: 'easeInOutQuart'
                     },
                     interaction: {
@@ -3425,10 +3495,20 @@
                 const datasets = chart.data.datasets;
                 const originalData = chart.originalData;
                 
+                // For mobile devices, show full data immediately (static mode)
+                if (isMobileDevice()) {
+                    datasets[0].data = [...originalData[0]]; // Sample Player
+                    datasets[1].data = [...originalData[1]]; // League Average
+                    datasets[2].data = [...originalData[2]]; // Conference Average
+                    datasets[3].data = [...originalData[3]]; // Elite Threshold
+                    chart.update('none');
+                    return;
+                }
+                
                 // Charts are always visible (structure appears immediately)
                 // No need to set hidden = false since charts start visible
                 
-                // Progressive data animation sequence:
+                // Desktop progressive data animation sequence:
                 // 0-25%: League Average data grows from 0 to full values
                 // 25-50%: Conference Average data grows from 0 to full values
                 // 50-75%: Elite Threshold data grows from 0 to full values
