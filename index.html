@@ -122,8 +122,10 @@
             }
             
             .hero-stats {
-                margin-top: 2rem !important;
-                padding-top: 1rem !important;
+                margin-top: 1rem !important;
+                margin-bottom: 0.5rem !important;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0 !important;
             }
             
             /* Mobile stats format - show k+/m+ to prevent line wrapping */
@@ -140,22 +142,18 @@
                 display: inline-block !important;
             }
             
-            /* DISABLE ALL ANIMATIONS AND TRANSITIONS ON MOBILE */
-            * {
+            /* DISABLE MOST ANIMATIONS AND TRANSITIONS ON MOBILE - BUT ALLOW HERO ANIMATIONS */
+            .scroll-section *,
+            .contact-section *,
+            .mission-vision-section *,
+            .chart-container *,
+            .position-chart * {
                 animation: none !important;
                 transition: none !important;
                 transform: none !important;
             }
             
-            /* Make all elements immediately visible - no fade-ins or delays */
-            .hero-stats,
-            .stat-item,
-            .stat-number,
-            .stat-suffix,
-            .stat-text,
-            .stat-label,
-            .hero-tagline,
-            .hero-cta-button,
+            /* Make non-hero elements immediately visible - no fade-ins or delays */
             .scroll-section h2,
             .scroll-section p,
             .scroll-section-tagline,
@@ -2074,7 +2072,7 @@
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">
-                            <span class="stat-number" data-target="230">230</span><span class="stat-suffix desktop-only">m+</span><span class="stat-suffix mobile-only" style="display: none;">000000</span>
+                            <span class="stat-number" data-target="230">230</span><span class="stat-suffix desktop-only">M+</span><span class="stat-suffix mobile-only" style="display: none;">000000</span>
                         </div>
                         <div class="stat-label">Data Points Processed</div>
                     </div>
@@ -2477,7 +2475,7 @@
             });
             
         } else {
-            // Only add scroll listeners for desktop to prevent mobile scroll jumping
+            // Add scroll listeners for both desktop and mobile to enable hero animations
             window.addEventListener('scroll', function() {
                 // Clear any existing timeout to prevent scroll jumping
                 if (scrollTimeout) {
@@ -2491,22 +2489,20 @@
                     const scrollTop = window.pageYOffset;
                     const heroHeight = heroSection.offsetHeight;
                     
-                    // Disable hero fade effect on mobile devices
-                    if (!isMobileDevice()) {
-                        // Calculate fade effect based on scroll position
-                        const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
-                        const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
+                    // Enable hero fade effect on both mobile and desktop
+                    // Calculate fade effect based on scroll position
+                    const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
+                    const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
 
-                        if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
-                            const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-                            heroSection.classList.add('fade-out');
-                            const overlay = heroSection.querySelector('::after') || heroSection;
-                            // Use CSS transition for smooth black fade
-                        } else if (scrollTop > fadeEnd) {
-                            heroSection.classList.add('fade-out');
-                        } else {
-                            heroSection.classList.remove('fade-out');
-                        }
+                    if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
+                        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+                        heroSection.classList.add('fade-out');
+                        const overlay = heroSection.querySelector('::after') || heroSection;
+                        // Use CSS transition for smooth black fade
+                    } else if (scrollTop > fadeEnd) {
+                        heroSection.classList.add('fade-out');
+                    } else {
+                        heroSection.classList.remove('fade-out');
                     }
                     
                     // Show scroll section content when it comes into view
