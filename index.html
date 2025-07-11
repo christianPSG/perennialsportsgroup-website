@@ -1771,18 +1771,19 @@
 
             /* Dynamic text scaling for very small screens - prevent overflow */
             .hero-tagline {
-                font-size: 1.2rem !important;
-                letter-spacing: 0.5px !important;
+                font-size: 0.9rem !important;
+                letter-spacing: 0.1px !important;
                 margin: -1rem 0 0 0 !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
                 hyphens: auto !important;
                 width: 100% !important;
-                max-width: 100% !important;
+                max-width: calc(100% - 2rem) !important;
                 box-sizing: border-box !important;
                 text-align: center !important;
-                padding: 0 1rem !important;
+                padding: 0 2rem !important;
                 overflow-x: hidden !important;
+                line-height: 1.2 !important;
             }
             
             .scroll-section-tagline {
@@ -1837,13 +1838,16 @@
                 box-sizing: border-box !important;
             }
 
-            .stat-number {
+            .stat-number,
+            .stat-suffix,
+            .stat-text {
                 font-size: 1.1rem !important;
                 margin-bottom: 0.2rem !important;
                 font-weight: bold !important;
                 display: inline !important;
                 text-align: center !important;
                 white-space: nowrap !important;
+                line-height: 1 !important;
             }
 
             .stat-label {
@@ -2032,6 +2036,46 @@
                 max-width: calc(100vw - 2rem) !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
+            }
+
+            /* Dynamic text scaling for medium mobile screens - prevent overflow */
+            .hero-tagline {
+                font-size: 1rem !important;
+                letter-spacing: 0.2px !important;
+                margin: -1rem 0 0 0 !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                hyphens: auto !important;
+                width: 100% !important;
+                max-width: calc(100% - 2rem) !important;
+                box-sizing: border-box !important;
+                text-align: center !important;
+                padding: 0 2rem !important;
+                overflow-x: hidden !important;
+                line-height: 1.2 !important;
+            }
+
+            /* Stats section - consistent font sizes */
+            .stat-number,
+            .stat-suffix,
+            .stat-text {
+                font-size: 1.3rem !important;
+                margin-bottom: 0.2rem !important;
+                font-weight: bold !important;
+                display: inline !important;
+                text-align: center !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
+            }
+
+            .stat-label {
+                font-size: 0.75rem !important;
+                line-height: 1.2 !important;
+                text-align: center !important;
+                display: block !important;
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                margin-top: 0.2rem !important;
             }
 
             /* Mission & Vision grid - stack vertically but with better spacing */
