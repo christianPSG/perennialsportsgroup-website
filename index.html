@@ -1798,7 +1798,7 @@
                 visibility: visible !important;
             }
 
-            /* Mission & Vision - vertical stacking */
+            /* Mission & Vision - vertical stacking with dynamic height */
             #mission-vision-section .scroll-section-container > div:last-child {
                 display: flex !important;
                 flex-direction: column !important;
@@ -1807,6 +1807,8 @@
                 max-width: 100% !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                height: auto !important;
+                min-height: auto !important;
             }
             
             #mission-vision-section .scroll-section-container > div:last-child > div {
@@ -1815,6 +1817,18 @@
                 padding: 1.5rem !important;
                 margin: 0 !important;
                 box-sizing: border-box !important;
+                height: auto !important;
+                min-height: 200px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            
+            /* Mission & Vision section - ensure proper height on mobile */
+            #mission-vision-section {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 3rem 0 !important;
             }
 
             /* Chart containers - responsive sizing */
@@ -2019,7 +2033,7 @@
     </section>
 
     <!-- Mission and Vision Section -->
-    <section class="scroll-section" id="mission-vision-section" style="padding: 1rem 0;">
+    <section class="scroll-section" id="mission-vision-section" style="padding: 2rem 0;">
         <div id="particles-mission-vision"></div>
         <div class="scroll-section-container" style="flex-direction: column;">
             <!-- Centered Mission & Vision Title -->
@@ -2027,8 +2041,8 @@
                 <h2 class="scroll-section-tagline" style="text-align: center; margin-bottom: 0;">Our Mission & Vision</h2>
             </div>
             
-            <!-- Grid layout with 4 equal square containers fitting in viewport -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1.5rem; width: 90%; height: 65vh; margin: 0 auto;">
+            <!-- Grid layout with dynamic height based on content -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 1.5rem; width: 90%; min-height: 60vh; margin: 0 auto;">
                 <!-- QB Chart Container -->
                 <div style="display: flex; align-items: center; justify-content: center;">
                     <div class="mobility-chart-container" style="gap: 0; padding: 0; width: 80%; height: 80%; display: flex; align-items: center; justify-content: center;">
@@ -2222,30 +2236,37 @@
             }
         });
 
-        // Smooth scrolling for navigation links
+        // Smooth scrolling for navigation links - FIXED FOR MOBILE
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
+                    // Prevent scroll jumping on mobile by using simpler approach
+                    if (isMobileDevice()) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             });
         });
 
-        // Navbar background on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+        // Navbar background on scroll - MOBILE OPTIMIZED
+        if (!isMobileDevice()) {
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }, { passive: true });
+        }
 
         // Contact form handling with popup notification
         document.getElementById('contactForm').addEventListener('submit', function(e) {
@@ -2362,79 +2383,89 @@
         // Start count-up animation after stats appear (1.5s delay)
         setTimeout(animateCountUp, 1500);
 
-        // Scroll lock effect for new section with fade transitions
+        // Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
         let lastScrollTop = 0;
+        let scrollTimeout = null;
         
-        window.addEventListener('scroll', function() {
-            const heroSection = document.querySelector('.hero');
-            const scrollSection = document.querySelector('.scroll-section');
-            const missionVisionSection = document.querySelector('#mission-vision-section');
-            const scrollTop = window.pageYOffset;
-            const heroHeight = heroSection.offsetHeight;
-            
-            // Calculate fade effect based on scroll position
-            const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
-            const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
-            
-            if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
-                const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-                heroSection.classList.add('fade-out');
-                const overlay = heroSection.querySelector('::after') || heroSection;
-                // Use CSS transition for smooth black fade
-            } else if (scrollTop > fadeEnd) {
-                heroSection.classList.add('fade-out');
-            } else {
-                heroSection.classList.remove('fade-out');
-            }
-            
-            // Show scroll section content when it comes into view
-            const scrollSectionRect = scrollSection.getBoundingClientRect();
-            if (scrollSectionRect.top < window.innerHeight * 0.8) {
-                scrollSection.classList.add('visible');
-            }
-            
-            // Show mission vision section content when it comes into view
-            if (missionVisionSection) {
-                const missionVisionRect = missionVisionSection.getBoundingClientRect();
-                if (missionVisionRect.top < window.innerHeight * 0.7) {
-                    missionVisionSection.classList.add('mission-vision-visible');
+        // Only add scroll listeners for desktop to prevent mobile scroll jumping
+        if (!isMobileDevice()) {
+            window.addEventListener('scroll', function() {
+                // Clear any existing timeout to prevent scroll jumping
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
                 }
-            }
-
-            // Contact section scroll animations
-            const contactSection = document.querySelector('.contact-section');
-            if (contactSection) {
-                const contactRect = contactSection.getBoundingClientRect();
-                if (contactRect.top < window.innerHeight * 0.8) {
-                    contactSection.classList.add('visible');
-                }
-            }
-            
-            // Section fade transitions - only at very end of scroll
-            const sections = document.querySelectorAll('.scroll-section');
-            const scrollDirection = scrollTop > lastScrollTop ? 'down' : 'up';
-            
-            sections.forEach((section, index) => {
-                const rect = section.getBoundingClientRect();
-                const sectionTop = rect.top;
-                const sectionBottom = rect.bottom;
-                const windowHeight = window.innerHeight;
                 
-                // Only fade when section is almost completely out of view
-                if (scrollDirection === 'down' && sectionTop < -windowHeight * 0.8) {
-                    // Scrolling down, fade out sections that are almost completely above viewport
-                    section.classList.add('fade-out');
-                } else if (scrollDirection === 'up' && sectionBottom > windowHeight * 1.8) {
-                    // Scrolling up, fade out sections that are almost completely below viewport
-                    section.classList.add('fade-out');
-                } else if (sectionTop >= -windowHeight * 0.7 && sectionBottom <= windowHeight * 1.7) {
-                    // Section is mostly in view, remove fade
-                    section.classList.remove('fade-out');
-                }
-            });
+                scrollTimeout = setTimeout(() => {
+                    const heroSection = document.querySelector('.hero');
+                    const scrollSection = document.querySelector('.scroll-section');
+                    const missionVisionSection = document.querySelector('#mission-vision-section');
+                    const scrollTop = window.pageYOffset;
+                    const heroHeight = heroSection.offsetHeight;
+                    
+                    // Calculate fade effect based on scroll position
+                    const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
+                    const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
+                    
+                    if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
+                        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+                        heroSection.classList.add('fade-out');
+                        const overlay = heroSection.querySelector('::after') || heroSection;
+                        // Use CSS transition for smooth black fade
+                    } else if (scrollTop > fadeEnd) {
+                        heroSection.classList.add('fade-out');
+                    } else {
+                        heroSection.classList.remove('fade-out');
+                    }
+                    
+                    // Show scroll section content when it comes into view
+                    const scrollSectionRect = scrollSection.getBoundingClientRect();
+                    if (scrollSectionRect.top < window.innerHeight * 0.8) {
+                        scrollSection.classList.add('visible');
+                    }
+                    
+                    // Show mission vision section content when it comes into view
+                    if (missionVisionSection) {
+                        const missionVisionRect = missionVisionSection.getBoundingClientRect();
+                        if (missionVisionRect.top < window.innerHeight * 0.7) {
+                            missionVisionSection.classList.add('mission-vision-visible');
+                        }
+                    }
+
+                    // Contact section scroll animations
+                    const contactSection = document.querySelector('.contact-section');
+                    if (contactSection) {
+                        const contactRect = contactSection.getBoundingClientRect();
+                        if (contactRect.top < window.innerHeight * 0.8) {
+                            contactSection.classList.add('visible');
+                        }
+                    }
+                    
+                    lastScrollTop = scrollTop;
+                }, 16); // Throttle to ~60fps
+            }, { passive: true });
+        } else {
+            // For mobile, use simpler intersection observer approach
+            const observerOptions = {
+                threshold: 0.3,
+                rootMargin: '0px 0px -20% 0px'
+            };
             
-            lastScrollTop = scrollTop;
-        });
+            const sectionObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        if (entry.target.id === 'mission-vision-section') {
+                            entry.target.classList.add('mission-vision-visible');
+                        }
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe sections for mobile
+            document.querySelectorAll('.scroll-section, .contact-section').forEach(section => {
+                sectionObserver.observe(section);
+            });
+        }
 
         // Initialize Particles.js
         particlesJS('particles-js', {
@@ -4230,7 +4261,7 @@
 
         // ===== MOBILE OPTIMIZATIONS JAVASCRIPT =====
         
-        // Mobile device detection
+        // Mobile device detection - ENSURE GLOBAL ACCESS
         function isMobileDevice() {
             return window.innerWidth <= 992 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         }
@@ -4338,27 +4369,9 @@
                 document.documentElement.style.scrollBehavior = 'smooth';
             }
             
-            // Optimize scroll performance - DISABLED FOR MOBILE TO PREVENT FONT SCALING
-            let ticking = false;
-            function updateOnScroll() {
-                // Skip scroll updates on mobile to prevent font scaling issues
-                if (isMobileDevice()) {
-                    return;
-                }
-                
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        // Throttled scroll updates for mobile performance
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }
-            
-            // Only add scroll listener for desktop devices
-            if (!isMobileDevice()) {
-                window.addEventListener('scroll', updateOnScroll, { passive: true });
-            }
+            // Optimize scroll performance - COMPLETELY DISABLED FOR MOBILE
+            // All scroll event listeners are now conditionally added only for desktop
+            // This prevents any scroll-triggered JavaScript from causing issues on mobile
         }
         
         // Mobile-specific particle configuration
