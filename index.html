@@ -1685,11 +1685,14 @@
                 scroll-snap-type: none !important;
                 scroll-behavior: auto !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
             }
             
             body {
                 scroll-snap-type: none !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
+                position: relative !important;
             }
             
             .hero,
@@ -1699,6 +1702,44 @@
                 scroll-snap-stop: normal !important;
                 min-height: auto !important;
                 height: auto !important;
+                position: relative !important;
+            }
+
+            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
+            * {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                will-change: auto !important;
+                backface-visibility: visible !important;
+                perspective: none !important;
+            }
+
+            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
+            .hero {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: 100vh !important;
+            }
+
+            .scroll-section {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: auto !important;
+            }
+
+            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
+            .hero-content,
+            .scroll-section-container,
+            .contact-section {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: none !important;
             }
 
             /* HERO SECTION - CENTER TEXT AND FIX STATS */
@@ -1956,11 +1997,14 @@
                 scroll-snap-type: none !important;
                 scroll-behavior: auto !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
             }
             
             body {
                 scroll-snap-type: none !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
+                position: relative !important;
             }
             
             .hero,
@@ -1970,6 +2014,44 @@
                 scroll-snap-stop: normal !important;
                 min-height: auto !important;
                 height: auto !important;
+                position: relative !important;
+            }
+
+            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
+            * {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                will-change: auto !important;
+                backface-visibility: visible !important;
+                perspective: none !important;
+            }
+
+            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
+            .hero {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: 100vh !important;
+            }
+
+            .scroll-section {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: auto !important;
+            }
+
+            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
+            .hero-content,
+            .scroll-section-container,
+            .contact-section {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: none !important;
             }
 
             /* HERO SECTION - CENTER TEXT AND FIX STATS */
@@ -2264,17 +2346,66 @@
         
         /* Touch-friendly improvements for all mobile devices */
         @media (max-width: 992px) {
-            /* Remove scroll snap for all mobile devices - continuous scrolling */
+            /* COMPLETE SCROLL SNAP REMOVAL FOR ALL MOBILE DEVICES */
             html {
                 scroll-snap-type: none !important;
                 scroll-behavior: auto !important;
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+            }
+            
+            body {
+                scroll-snap-type: none !important;
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                position: relative !important;
             }
             
             .hero,
             .scroll-section,
             .contact-section {
                 scroll-snap-align: none !important;
+                scroll-snap-stop: normal !important;
                 min-height: auto !important;
+                height: auto !important;
+                position: relative !important;
+            }
+
+            /* REMOVE ALL TRANSITIONS AND ANIMATIONS ON MOBILE */
+            * {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                will-change: auto !important;
+                backface-visibility: visible !important;
+                perspective: none !important;
+            }
+
+            /* DISABLE SCROLL LOCK AND FIXED POSITIONING */
+            .hero {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: 100vh !important;
+            }
+
+            .scroll-section {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: auto !important;
+            }
+
+            /* REMOVE ANY STICKY OR FIXED ELEMENTS */
+            .hero-content,
+            .scroll-section-container,
+            .contact-section {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: none !important;
             }
             
             /* Larger touch targets */
