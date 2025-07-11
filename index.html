@@ -69,10 +69,12 @@
         @media (max-width: 992px) {
             html {
                 scroll-snap-type: none !important;
+                scroll-behavior: auto !important;
             }
             
             body {
                 scroll-snap-type: none !important;
+                overflow-y: auto !important;
             }
             
             .hero,
@@ -80,6 +82,27 @@
             .contact-section {
                 scroll-snap-align: none !important;
                 scroll-snap-stop: normal !important;
+                min-height: auto !important;
+                height: auto !important;
+            }
+            
+            /* Remove fixed heights that cause scroll conflicts */
+            .hero {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 2rem 0 !important;
+            }
+            
+            .scroll-section {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 2rem 0 !important;
+            }
+            
+            .contact-section {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 2rem 0 !important;
             }
         }
 
@@ -2687,7 +2710,7 @@
     </section>
 
     <!-- Mission and Vision Section -->
-    <section class="scroll-section" id="mission-vision-section" style="min-height: 100vh; padding: 1rem 0;">
+    <section class="scroll-section" id="mission-vision-section" style="padding: 1rem 0;">
         <div id="particles-mission-vision"></div>
         <div class="scroll-section-container" style="flex-direction: column;">
             <!-- Centered Mission & Vision Title -->
