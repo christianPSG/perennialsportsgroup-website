@@ -50,7 +50,7 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
       if (response.ok) {
         showNotification(
           "Thank you for your message! We will contact you soon at " +
-            data.email,
+          data.email,
           "success"
         );
         this.reset();
@@ -226,47 +226,51 @@ let scrollTimeout = null;
 let isScrolling = false;
 
 // Additional scroll jump prevention for mobile
-if (isMobileDevice()) {
-  // Prevent any programmatic scrolling on mobile
-  let preventScroll = false;
+// Create an IntersectionObserver to toggle visibility classes based on section view
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target;
 
-  // Override any scroll restoration
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
-
-  // Prevent scroll jumping from hash changes
-  window.addEventListener(
-    "hashchange",
-    function (e) {
-      e.preventDefault();
-      return false;
-    },
-    { passive: false }
-  );
-
-  // Prevent scroll jumping from focus events
-  document.addEventListener(
-    "focusin",
-    function (e) {
-      if (preventScroll) {
-        e.preventDefault();
-        e.target.blur();
+      if (entry.isIntersecting) {
+        // When section enters the viewport (at least 20% visible)
+        if (el.id === "mission-vision-section") {
+          el.classList.add("mission-vision-visible");
+        } else if (el.id === "about-section") {
+          el.classList.add("about-section-visible");
+        } else {
+          el.classList.add("visible");
+        }
+      } else {
+        // When section leaves the viewport
+        if (el.id === "mission-vision-section") {
+          el.classList.remove("mission-vision-visible");
+        } else if (el.id === "about-section") {
+          el.classList.remove("about-section-visible");
+        } else {
+          el.classList.remove("visible");
+        }
       }
-    },
-    { passive: false }
-  );
+    });
+  },
+  {
+    threshold: 0.2, // Trigger when 20% of the element is visible
+  }
+);
 
-  // Enable hero animations on mobile but disable other intersection observers
-  setupMobileHeroAnimations();
+// Observe all relevant sections
+document.querySelectorAll(
+  ".scroll-section, .contact-section, #mission-vision-section, #about-section"
+).forEach((section) => observer.observe(section));
 
-  // Make all sections immediately visible on mobile (except hero)
-  document
-    .querySelectorAll(
-      ".scroll-section, .contact-section, #mission-vision-section, #about-section"
-    )
+
+// For mobile, disable all intersection observers and make everything immediately visible
+if (isMobileDevice()) {
+  // On mobile: make all relevant sections visible immediately without scroll triggers
+  document.querySelectorAll(".scroll-section, .contact-section, #mission-vision-section, #about-section")
     .forEach((section) => {
       section.classList.add("visible");
+
       if (section.id === "mission-vision-section") {
         section.classList.add("mission-vision-visible");
       } else if (section.id === "about-section") {
@@ -274,92 +278,40 @@ if (isMobileDevice()) {
       }
     });
 } else {
-  // Add scroll listeners for both desktop and mobile to enable hero animations
-  window.addEventListener(
-    "scroll",
-    function () {
-      // Clear any existing timeout to prevent scroll jumping
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
+  // On desktop: use IntersectionObserver to toggle visibility classes based on scroll
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target;
 
-      scrollTimeout = setTimeout(() => {
-        const heroSection = document.querySelector(".hero");
-        const scrollSection = document.querySelector(".scroll-section");
-        const aboutSection = document.querySelector("#about-section");
-        const missionVisionSection = document.querySelector(
-          "#mission-vision-section"
-        );
-        const scrollTop = window.pageYOffset;
-        const heroHeight = heroSection.offsetHeight;
-
-        // Enable hero fade effect on both mobile and desktop
-        // Calculate fade effect based on scroll position
-        const fadeStart = heroHeight * 0.6; // Start fading at 60% of hero height
-        const fadeEnd = heroHeight * 0.9; // Complete fade at 90% of hero height
-
-        if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
-          const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-          heroSection.classList.add("fade-out");
-          const overlay = heroSection.querySelector("::after") || heroSection;
-          // Use CSS transition for smooth black fade
-        } else if (scrollTop > fadeEnd) {
-          heroSection.classList.add("fade-out");
+        if (entry.isIntersecting) {
+          if (el.id === "mission-vision-section") {
+            el.classList.add("mission-vision-visible");
+          } else if (el.id === "about-section") {
+            el.classList.add("about-section-visible");
+          } else {
+            el.classList.add("visible");
+          }
         } else {
-          heroSection.classList.remove("fade-out");
-        }
-
-        // Show scroll section content when it comes into view
-        const scrollSectionRect = scrollSection.getBoundingClientRect();
-        if (scrollSectionRect.top < window.innerHeight * 0.8) {
-          scrollSection.classList.add("visible");
-        }
-
-        // Show mission vision section content when it comes into view
-        if (missionVisionSection) {
-          const missionVisionRect =
-            missionVisionSection.getBoundingClientRect();
-          if (missionVisionRect.top < window.innerHeight * 0.7) {
-            missionVisionSection.classList.add("mission-vision-visible");
+          if (el.id === "mission-vision-section") {
+            el.classList.remove("mission-vision-visible");
+          } else if (el.id === "about-section") {
+            el.classList.remove("about-section-visible");
+          } else {
+            el.classList.remove("visible");
           }
         }
-
-        // Show about section content when it comes into view
-        const aboutSectionRect = aboutSection.getBoundingClientRect();
-        if (aboutSectionRect.top < window.innerHeight * 0.8) {
-          aboutSection.classList.add("about-section-visible");
-        }
-
-        // Contact section scroll animations
-        const contactSection = document.querySelector(".contact-section");
-        if (contactSection) {
-          const contactRect = contactSection.getBoundingClientRect();
-          if (contactRect.top < window.innerHeight * 0.8) {
-            contactSection.classList.add("visible");
-          }
-        }
-
-        lastScrollTop = scrollTop;
-      }, 16); // Throttle to ~60fps
+      });
     },
-    { passive: true }
+    {
+      threshold: 0.2,
+    }
   );
+
+  document.querySelectorAll(".scroll-section, .contact-section, #mission-vision-section, #about-section")
+    .forEach((section) => observer.observe(section));
 }
 
-// For mobile, disable all intersection observers and make everything immediately visible
-if (isMobileDevice()) {
-  // Make all sections immediately visible without any scroll triggers
-  document
-    .querySelectorAll(".scroll-section, .contact-section")
-    .forEach((section) => {
-      section.classList.add("visible");
-      if (section.id === "mission-vision-section") {
-        section.classList.add("mission-vision-visible");
-      } else if (section.id === "about-section") {
-        section.classList.add("about-section-visible");
-      }
-    });
-}
 
 // Initialize Particles.js (disabled on mobile for static mode)
 // Enable particles on all devices including mobile
@@ -891,14 +843,14 @@ function setupScrollTrigger() {
 
   // ScrollTrigger for section visibility and camera animation
   ScrollTrigger.create({
-    trigger: ".scroll-section",
+    trigger: ".scroll-section",  // Make sure this matches your basketball section's selector
     start: "top bottom",
     end: "bottom 20%",
     onEnter: () => {
       isScrollSectionVisible = true;
       animatePillarsIn();
 
-      // Start smooth automatic camera rotation immediately as we enter
+      // Kill previous camera animation if any
       if (cameraAnimation) cameraAnimation.kill();
 
       cameraAnimation = gsap.to(camera.position, {
@@ -911,6 +863,10 @@ function setupScrollTrigger() {
           camera.lookAt(0, 0, -5.25);
         },
       });
+
+      // **Re-initialize basketball scene here**
+      cleanupBasketballScene();   // <-- You need to write this to dispose previous scene properly
+      initBasketballScene();
     },
     onLeave: () => {
       isScrollSectionVisible = false;
@@ -921,6 +877,9 @@ function setupScrollTrigger() {
     },
     onEnterBack: () => {
       isScrollSectionVisible = true;
+      // Same as onEnter, re-init scene
+      cleanupBasketballScene();
+      initBasketballScene();
     },
     onLeaveBack: () => {
       isScrollSectionVisible = false;
@@ -930,6 +889,7 @@ function setupScrollTrigger() {
       }
     },
   });
+
 }
 
 function animatePillarsIn() {
@@ -1006,12 +966,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 2000);
 });
 
-// Toggle function for expandable service boxes
 function toggleBox(element) {
-  // Disable toggle functionality on mobile devices
-  if (isMobileDevice()) {
-    return;
-  }
+
+  // Close all other expanded boxes
+  const allBoxes = document.querySelectorAll(".service-box"); // Change to your actual class
+  allBoxes.forEach((box) => {
+    if (box !== element) {
+      box.classList.remove("expanded");
+    }
+  });
+
+  // Toggle current box
   element.classList.toggle("expanded");
 }
 
