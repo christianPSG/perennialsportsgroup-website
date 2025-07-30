@@ -37,12 +37,12 @@ html {
 
     /* Remove all scroll snap behavior */
     html {
-        scroll-snap-type: none !important;
+        scroll-snap-type: start !important;
         scroll-behavior: smooth !important;
     }
 
     body {
-        scroll-snap-type: none !important;
+        scroll-snap-type: start !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
     }
@@ -51,13 +51,10 @@ html {
     .hero,
     .scroll-section,
     .contact-section {
-        scroll-snap-align: none !important;
-        scroll-snap-stop: normal !important;
         min-height: auto !important;
         height: auto !important;
-        position: relative !important;
         overflow: visible !important;
-        padding: 3rem 0 !important;
+        padding: 1rem !important;
     }
 
     /* Ensure hero section is properly sized and positioned higher */
@@ -1914,7 +1911,7 @@ textarea.form-control {
     #mission-vision-section {
         min-height: auto !important;
         height: auto !important;
-        padding: 3rem 0 !important;
+        padding: 1rem 0 !important;
     }
 
     /* Chart containers - responsive sizing */
@@ -1942,7 +1939,6 @@ textarea.form-control {
     #basketball-canvas {
         height: 320px !important;
         width: 100% !important;
-        opacity: 0;
     }
 
     /* Contact section - hide map on mobile */

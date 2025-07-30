@@ -240,6 +240,7 @@ const observer = new IntersectionObserver(
           el.classList.add("about-section-visible");
         } else {
           el.classList.add("visible");
+              initBasketballScene();
         }
       } else {
         // When section leaves the viewport
@@ -268,13 +269,13 @@ document.querySelectorAll(
 if (isMobileDevice()) {
   // On mobile: make all relevant sections visible immediately without scroll triggers
   document.querySelectorAll(".scroll-section, .contact-section, #mission-vision-section, #about-section")
-    .forEach((section) => {
-      section.classList.add("visible");
-
+    .forEach((section) => {      
       if (section.id === "mission-vision-section") {
         section.classList.add("mission-vision-visible");
       } else if (section.id === "about-section") {
         section.classList.add("about-section-visible");
+      }else{
+        section.classList.add("visible");
       }
     });
 } else {
@@ -951,7 +952,6 @@ function onWindowResize() {
 // Initialize the basketball scene when the page loads
 window.addEventListener("load", () => {
   setTimeout(() => {
-    initBasketballScene();
     initPlayerProfile();
   }, 1000); // Delay to ensure all libraries are loaded
 });
