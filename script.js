@@ -1,4 +1,3 @@
-// Smooth scrolling for navigation links - FIXED FOR MOBILE
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
@@ -18,27 +17,22 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// Contact form handling with popup notification
 document.getElementById("contactForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  // Get form data
   const formData = new FormData(this);
   const data = Object.fromEntries(formData);
 
-  // Simple validation
   if (!data.name || !data.email || !data.message) {
     showNotification("Please fill in all required fields.", "error");
     return;
   }
 
-  // Show loading state
   const submitBtn = this.querySelector('button[type="submit"]');
   const originalText = submitBtn.textContent;
   submitBtn.textContent = "Sending...";
   submitBtn.disabled = true;
 
-  // Submit to Formspree with AJAX
   fetch(this.action, {
     method: "POST",
     body: formData,
@@ -68,21 +62,17 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
       );
     })
     .finally(() => {
-      // Reset button state
       submitBtn.textContent = originalText;
       submitBtn.disabled = false;
     });
 });
 
-// Notification popup function
 function showNotification(message, type) {
-  // Remove existing notification if any
   const existing = document.querySelector(".notification-popup");
   if (existing) {
     existing.remove();
   }
 
-  // Create notification element
   const notification = document.createElement("div");
   notification.className = `notification-popup ${type}`;
   notification.innerHTML = `
@@ -92,10 +82,8 @@ function showNotification(message, type) {
                 </div>
             `;
 
-  // Add to page
   document.body.appendChild(notification);
 
-  // Auto remove after 5 seconds
   setTimeout(() => {
     if (notification.parentElement) {
       notification.remove();
@@ -103,13 +91,11 @@ function showNotification(message, type) {
   }, 5000);
 }
 
-// Add fade-in animation on scroll
 const observerOptions = {
   threshold: 0.1,
   rootMargin: "0px 0px -50px 0px",
 };
 
-// Disable intersection observers on mobile for static mode
 if (!isMobileDevice()) {
   const observer = new IntersectionObserver(function (entries) {
     entries.forEach((entry) => {
@@ -119,21 +105,18 @@ if (!isMobileDevice()) {
     });
   }, observerOptions);
 
-  // Observe all sections
   document.querySelectorAll(".section").forEach((section) => {
     observer.observe(section);
   });
 }
 
-// Count-up animation for hero stats
 function animateCountUp() {
   const counters = document.querySelectorAll(".stat-number[data-target]");
 
-  // Enable counting animation on both mobile and desktop
   counters.forEach((counter) => {
     const target = parseInt(counter.getAttribute("data-target"));
-    const duration = isMobileDevice() ? 1500 : 1000; // Slightly longer on mobile for better visibility
-    const increment = target / (duration / 16); // 60fps
+    const duration = isMobileDevice() ? 1500 : 1000; 
+    const increment = target / (duration / 16);
     let current = 0;
 
     const timer = setInterval(() => {
@@ -147,26 +130,20 @@ function animateCountUp() {
   });
 }
 
-// Start count-up animation with IntersectionObserver for better mobile performance
 function initStatsCountingAnimation() {
   const statsSection = document.querySelector(".hero-stats");
   if (!statsSection) return;
 
   if (isMobileDevice()) {
-    // For mobile, start animation immediately since stats are visible
-    setTimeout(animateCountUp, 500); // Small delay to ensure elements are rendered
+    setTimeout(animateCountUp, 500);
   } else {
-    // For desktop, use the existing delayed approach
     setTimeout(animateCountUp, 1500);
   }
 }
 
-// Initialize stats counting animation
 initStatsCountingAnimation();
 
-// Setup mobile hero animations function - ensure visibility first, then animate
 function setupMobileHeroAnimations() {
-  // First, ensure all hero elements are definitely visible
   const heroLogo = document.querySelector(".hero-logo");
   const heroTagline = document.querySelector(".hero-tagline");
   const heroCta = document.querySelector(".hero-cta");
@@ -179,29 +156,25 @@ function setupMobileHeroAnimations() {
     stats: !!heroStats,
   });
 
-  // Force visibility and prepare for animation
   [heroLogo, heroTagline, heroCta, heroStats].forEach((element) => {
     if (element) {
-      // Force visibility first
       element.style.display = "block";
       element.style.visibility = "visible";
       element.style.position = "relative";
       element.style.zIndex = "1000";
 
-      // Then set up for animation
       element.style.opacity = "0";
       element.style.transform = "translateY(20px)";
       element.style.transition = "all 0.8s ease-out";
     }
   });
 
-  // Trigger fade-ins with proper delays (matching desktop timing)
   setTimeout(() => {
     if (heroTagline) {
       heroTagline.style.opacity = "1";
       heroTagline.style.transform = "translateY(0)";
     }
-  }, 500); // 0.5s delay like desktop
+  }, 500); 
 
   setTimeout(() => {
     if (heroLogo) {
@@ -217,33 +190,29 @@ function setupMobileHeroAnimations() {
       heroStats.style.opacity = "1";
       heroStats.style.transform = "translateY(0)";
     }
-  }, 1000); // 1s delay like desktop
+  }, 1000);
 }
 
-// Scroll lock effect for new section with fade transitions - MOBILE OPTIMIZED
 let lastScrollTop = 0;
 let scrollTimeout = null;
 let isScrolling = false;
 
-// Additional scroll jump prevention for mobile
-// Create an IntersectionObserver to toggle visibility classes based on section view
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       const el = entry.target;
 
       if (entry.isIntersecting) {
-        // When section enters the viewport (at least 20% visible)
         if (el.id === "mission-vision-section") {
           el.classList.add("mission-vision-visible");
         } else if (el.id === "about-section") {
           el.classList.add("about-section-visible");
-        } else {
-          el.classList.add("visible");
+        } else if(el.id === "basketball-canvas") {
               initBasketballScene();
+        }else{
+                    el.classList.add("visible");
         }
       } else {
-        // When section leaves the viewport
         if (el.id === "mission-vision-section") {
           el.classList.remove("mission-vision-visible");
         } else if (el.id === "about-section") {
@@ -255,67 +224,14 @@ const observer = new IntersectionObserver(
     });
   },
   {
-    threshold: 0.2, // Trigger when 20% of the element is visible
+    threshold: 0.2, 
   }
 );
 
-// Observe all relevant sections
 document.querySelectorAll(
-  ".scroll-section, .contact-section, #mission-vision-section, #about-section"
+  ".scroll-section, .contact-section, #mission-vision-section, #about-section, #basketball-canvas"
 ).forEach((section) => observer.observe(section));
 
-
-// For mobile, disable all intersection observers and make everything immediately visible
-if (isMobileDevice()) {
-  // On mobile: make all relevant sections visible immediately without scroll triggers
-  document.querySelectorAll(".scroll-section, .contact-section, #mission-vision-section, #about-section")
-    .forEach((section) => {      
-      if (section.id === "mission-vision-section") {
-        section.classList.add("mission-vision-visible");
-      } else if (section.id === "about-section") {
-        section.classList.add("about-section-visible");
-      }else{
-        section.classList.add("visible");
-      }
-    });
-} else {
-  // On desktop: use IntersectionObserver to toggle visibility classes based on scroll
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const el = entry.target;
-
-        if (entry.isIntersecting) {
-          if (el.id === "mission-vision-section") {
-            el.classList.add("mission-vision-visible");
-          } else if (el.id === "about-section") {
-            el.classList.add("about-section-visible");
-          } else {
-            el.classList.add("visible");
-          }
-        } else {
-          if (el.id === "mission-vision-section") {
-            el.classList.remove("mission-vision-visible");
-          } else if (el.id === "about-section") {
-            el.classList.remove("about-section-visible");
-          } else {
-            el.classList.remove("visible");
-          }
-        }
-      });
-    },
-    {
-      threshold: 0.2,
-    }
-  );
-
-  document.querySelectorAll(".scroll-section, .contact-section, #mission-vision-section, #about-section")
-    .forEach((section) => observer.observe(section));
-}
-
-
-// Initialize Particles.js (disabled on mobile for static mode)
-// Enable particles on all devices including mobile
 particlesJS("particles-js", {
   particles: {
     number: {
@@ -422,18 +338,15 @@ particlesJS("particles-js", {
   retina_detect: true,
 });
 
-// Initialize lighter particles for other sections
 function initLightParticles() {
-  // Enable light particles on all devices including mobile
 
-  // Light particles config - moderately reduced from main hero
   const lightParticlesConfig = {
     particles: {
       number: {
-        value: 120, // Increased for better visibility on dark backgrounds
+        value: 120,
         density: {
           enable: true,
-          value_area: 600, // Denser particles for dark sections
+          value_area: 600, 
         },
       },
       color: {
@@ -447,7 +360,7 @@ function initLightParticles() {
         },
       },
       opacity: {
-        value: 0.5, // Increased for better visibility on dark backgrounds
+        value: 0.5,
         random: true,
         anim: {
           enable: true,
@@ -457,7 +370,7 @@ function initLightParticles() {
         },
       },
       size: {
-        value: 2.5, // Slightly smaller particles (vs 3 on hero)
+        value: 2.5, 
         random: true,
         anim: {
           enable: false,
@@ -468,14 +381,14 @@ function initLightParticles() {
       },
       line_linked: {
         enable: true,
-        distance: 150, // Increased connection distance
+        distance: 150,
         color: "#1e3a8a",
-        opacity: 0.4, // Increased opacity for better visibility on dark backgrounds
-        width: 1, // Standard line width
+        opacity: 0.4,
+        width: 1,
       },
       move: {
         enable: true,
-        speed: 3.5, // Moderate movement (vs 6 on hero)
+        speed: 3.5,
         direction: "none",
         random: true,
         straight: false,
@@ -492,10 +405,10 @@ function initLightParticles() {
       detect_on: "canvas",
       events: {
         onhover: {
-          enable: false, // Disable hover effects for lighter impact
+          enable: false,
         },
         onclick: {
-          enable: false, // Disable click effects for lighter impact
+          enable: false,
         },
         resize: true,
       },
@@ -503,7 +416,6 @@ function initLightParticles() {
     retina_detect: true,
   };
 
-  // Initialize particles for each section
   particlesJS("particles-scroll-section", lightParticlesConfig);
   particlesJS("particles-about-section", lightParticlesConfig);
   particlesJS("particles-mission-vision", lightParticlesConfig);
@@ -511,12 +423,10 @@ function initLightParticles() {
   particlesJS("particles-social", lightParticlesConfig);
 }
 
-// Initialize light particles after main particles
 setTimeout(() => {
   initLightParticles();
 }, 1000);
 
-// Three.js Basketball Court Scene
 let scene,
   camera,
   renderer,
@@ -528,11 +438,9 @@ function initBasketballScene() {
   const canvas = document.getElementById("basketball-canvas");
   const container = canvas.parentElement;
 
-  // Scene setup
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
-  // Camera setup - start completely vertical overhead
   camera = new THREE.PerspectiveCamera(
     75,
     container.offsetWidth / container.offsetHeight,
@@ -542,13 +450,11 @@ function initBasketballScene() {
   camera.position.set(0, 30, 0);
   camera.lookAt(0, 0, 0);
 
-  // Renderer setup
   renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setSize(container.offsetWidth, container.offsetHeight);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  // Lighting
   const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
   scene.add(ambientLight);
 
@@ -559,38 +465,29 @@ function initBasketballScene() {
   directionalLight.shadow.mapSize.height = 2048;
   scene.add(directionalLight);
 
-  // Create basketball court
   createBasketballCourt();
 
-  // Create shot frequency pillars
   createShotFrequencyPillars();
 
-  // Handle window resize
   window.addEventListener("resize", onWindowResize);
 
-  // Start animation loop
   animate();
 
-  // Setup GSAP ScrollTrigger
   setupScrollTrigger();
 }
 
 function createBasketballCourt() {
-  // Half court dimensions: 47 feet x 50 feet (scaled down)
-  const courtWidth = 25; // Half court width
-  const courtLength = 23.5; // Half court length
+  const courtWidth = 25; 
+  const courtLength = 23.5; 
 
-  // Position grid so basket is on the edge (front edge of the court)
-  const gridOffsetZ = courtLength / 2; // Move grid forward so basket is on edge
+  const gridOffsetZ = courtLength / 2; 
 
-  // Create flat grid on X,Z axis with dark blue gridlines
-  const gridHelper = new THREE.GridHelper(courtLength, 20, 0x1a237e, 0x1a237e); // Dark blue gridlines
+  const gridHelper = new THREE.GridHelper(courtLength, 20, 0x1a237e, 0x1a237e);
   gridHelper.material.transparent = true;
   gridHelper.material.opacity = 0.6;
   gridHelper.position.set(0, 0.01, gridOffsetZ);
   scene.add(gridHelper);
 
-  // Add perpendicular grid lines for complete grid
   const gridHelper2 = new THREE.GridHelper(courtWidth, 16, 0x1a237e, 0x1a237e);
   gridHelper2.material.transparent = true;
   gridHelper2.material.opacity = 0.6;
@@ -598,7 +495,6 @@ function createBasketballCourt() {
   gridHelper2.position.set(0, 0.01, gridOffsetZ);
   scene.add(gridHelper2);
 
-  // Translucent court base
   const courtGeometry = new THREE.PlaneGeometry(courtWidth, courtLength);
   const courtMaterial = new THREE.MeshLambertMaterial({
     color: 0x000000,
@@ -611,17 +507,12 @@ function createBasketballCourt() {
   court.receiveShadow = true;
   scene.add(court);
 
-  // Proper 3-point line using actual basketball court dimensions
-  // NBA 3-point line: 23'9" (7.24m) at top of arc, 22' (6.7m) in corners
-
-  // Create the curved arc portion of the 3-point line
   const arcPoints = [];
   const basketZ = -5.25;
-  const arcRadius = 6.75; // 22 feet in our scale
-  const cornerDistance = 6.7; // Distance from basket to corner 3-point line
+  const arcRadius = 6.75; 
+  const cornerDistance = 6.7;
 
-  // Generate points for the arc (from corner to corner)
-  const startAngle = Math.acos(cornerDistance / arcRadius); // Angle where arc meets corner line
+  const startAngle = Math.acos(cornerDistance / arcRadius);
   const endAngle = Math.PI - startAngle;
 
   for (let angle = startAngle; angle <= endAngle; angle += 0.05) {
@@ -630,7 +521,6 @@ function createBasketballCourt() {
     arcPoints.push(new THREE.Vector3(x, 0.03, z));
   }
 
-  // Create the arc geometry using BufferGeometry
   const arcGeometry = new THREE.BufferGeometry().setFromPoints(arcPoints);
   const threePointMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
@@ -639,11 +529,6 @@ function createBasketballCourt() {
   const threePointArc = new THREE.Line(arcGeometry, threePointMaterial);
   scene.add(threePointArc);
 
-  // Corner lines removed - keeping only the arc
-
-  // Free throw line removed - was thick white line
-
-  // Basketball hoop - made twice as tall (6.1 instead of 3.05)
   const hoopGeometry = new THREE.RingGeometry(0.45, 0.5, 16);
   const hoopMaterial = new THREE.MeshLambertMaterial({ color: 0xff6600 });
   const hoop = new THREE.Mesh(hoopGeometry, hoopMaterial);
@@ -651,7 +536,6 @@ function createBasketballCourt() {
   hoop.position.set(0, 6.1, -5.25);
   scene.add(hoop);
 
-  // Backboard - also raised to match hoop height
   const backboardGeometry = new THREE.PlaneGeometry(1.8, 1.05);
   const backboardMaterial = new THREE.MeshLambertMaterial({
     color: 0xffffff,
@@ -662,14 +546,12 @@ function createBasketballCourt() {
   backboard.position.set(0, 6.5, -6);
   scene.add(backboard);
 
-  // Main basketball pole/support - full height
   const poleGeometry = new THREE.CylinderGeometry(0.1, 0.12, 6.5, 8);
   const poleMaterial = new THREE.MeshLambertMaterial({ color: 0x666666 });
   const pole = new THREE.Mesh(poleGeometry, poleMaterial);
   pole.position.set(0, 3.25, -6);
   scene.add(pole);
 
-  // Horizontal support arm connecting pole to hoop
   const armGeometry = new THREE.CylinderGeometry(0.06, 0.06, 0.75, 6);
   const armMaterial = new THREE.MeshLambertMaterial({ color: 0x666666 });
   const arm = new THREE.Mesh(armGeometry, armMaterial);
@@ -677,7 +559,6 @@ function createBasketballCourt() {
   arm.position.set(0, 6.1, -5.625);
   scene.add(arm);
 
-  // Hoop mounting bracket
   const bracketGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.2, 6);
   const bracketMaterial = new THREE.MeshLambertMaterial({ color: 0x444444 });
   const bracket = new THREE.Mesh(bracketGeometry, bracketMaterial);
@@ -686,8 +567,6 @@ function createBasketballCourt() {
 }
 
 function createShotFrequencyPillars() {
-  // Generate realistic basketball shooting pattern data
-  // Basket is at (0, 0, -5.25)
   const shotData = [];
   const basketX = 0;
   const basketZ = -5.25;
@@ -829,13 +708,6 @@ function createShotFrequencyPillars() {
 }
 
 function setupScrollTrigger() {
-  // Disable ScrollTrigger on mobile for static mode
-  if (isMobileDevice()) {
-    // For mobile, immediately show basketball court without scroll triggers
-    isScrollSectionVisible = true;
-    animatePillarsIn();
-    return;
-  }
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
@@ -894,16 +766,7 @@ function setupScrollTrigger() {
 }
 
 function animatePillarsIn() {
-  // For mobile devices, show pillars immediately at full scale (static mode)
-  if (isMobileDevice()) {
-    pillars.forEach((pillarObj, index) => {
-      pillarObj.pillar.scale.y = 1;
-      pillarObj.glow.scale.y = 1;
-    });
-    return;
-  }
 
-  // Desktop animation
   pillars.forEach((pillarObj, index) => {
     gsap.fromTo(
       pillarObj.pillar.scale,
@@ -932,7 +795,6 @@ function animate() {
   requestAnimationFrame(animate);
 
   if (isScrollSectionVisible) {
-    // Subtle rotation animation for pillars only
     pillars.forEach((pillarObj, index) => {
       pillarObj.pillar.rotation.y += 0.005;
       pillarObj.glow.rotation.y += 0.005;
@@ -949,11 +811,10 @@ function onWindowResize() {
   renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 
-// Initialize the basketball scene when the page loads
 window.addEventListener("load", () => {
   setTimeout(() => {
     initPlayerProfile();
-  }, 1000); // Delay to ensure all libraries are loaded
+  }, 1000);
 });
 
 // Also initialize when DOM is ready
@@ -1017,7 +878,6 @@ function setupRadarScrollTrigger() {
 
   // Disable chart ScrollTrigger on mobile for static mode
   if (!isMobileDevice()) {
-    // ScrollTrigger for progressive animation
     ScrollTrigger.create({
       trigger: "#mission-vision-section",
       start: "top 80%",
@@ -1243,7 +1103,7 @@ function initChartJsRadar(canvas, position) {
         },
       },
       animation: {
-        duration: isMobileDevice() ? 0 : 2000, // No animation on mobile
+        duration: 2000, // No animation on mobile
         easing: "easeInOutQuart",
       },
       interaction: {
@@ -1993,7 +1853,6 @@ function drawPieChart(ctx, title, value) {
     currentAngle += segmentAngle;
   });
 
-  // Draw center circle with overall percentage
   ctx.fillStyle = "#000000";
   ctx.beginPath();
   ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
@@ -2004,15 +1863,12 @@ function drawPieChart(ctx, title, value) {
   ctx.textAlign = "center";
   ctx.fillText(`${value}%`, centerX, centerY + 5);
 
-  // Add efficiency ranking
   ctx.fillStyle = "#C7D9E5";
   ctx.font = "14px Inter";
   ctx.fillText("96th Percentile", centerX, height - 20);
 }
 
-// Setup ScrollTrigger for player profile
 function setupPlayerProfileScrollTrigger() {
-  // Disable player profile ScrollTrigger on mobile for static mode
   if (!isMobileDevice()) {
     ScrollTrigger.create({
       trigger: "#mission-section",
@@ -2023,12 +1879,10 @@ function setupPlayerProfileScrollTrigger() {
       },
     });
   } else {
-    // For mobile, immediately initialize player profile
     initPlayerProfile();
   }
 }
 
-// Initialize player profile when page loads
 document.addEventListener("DOMContentLoaded", function () {
   setupPlayerProfileScrollTrigger();
 });
@@ -2038,7 +1892,6 @@ function drawNormalDistribution(ctx, title, mean) {
   const height = chartCanvas.height;
   const padding = 40;
 
-  // Clear and set background
   ctx.fillStyle = "#000000";
   ctx.fillRect(0, 0, width, height);
 
@@ -2279,11 +2132,9 @@ function adjustFontSizes() {
   });
 }
 
-// Mobile-optimized basketball court scene
 function optimizeBasketballSceneForMobile() {
   if (!isMobileDevice() || !camera || !renderer) return;
 
-  // Adjust camera position for mobile viewing
   camera.position.set(0, 25, 5); // Closer and lower angle for mobile
   camera.lookAt(0, 0, -5.25);
 

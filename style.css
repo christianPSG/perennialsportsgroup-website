@@ -2004,14 +2004,13 @@ textarea.form-control {
     }
 }
 
-/* Extra small devices (576px and below) */
 @media (max-width: 576px) {
 
     .scroll-section h2 {
         font-size: 1.5rem;
+        text-align: center;
     }
 
-    /* Hide navigation bar on mobile */
     .navbar {
         display: none !important;
     }
@@ -2050,19 +2049,16 @@ textarea.form-control {
         height: 280px !important;
     }
 
-    /* Mobile contact section - vertical stacking of form and social media only */
     .contact-section .scroll-section-container>div:last-child {
         flex-direction: column !important;
         gap: 2rem !important;
     }
 
-    /* Hide contact information and map on mobile */
     .contact-section .contact-info-section,
     .contact-section iframe {
         display: none !important;
     }
 
-    /* Form section - full width on mobile, positioned first */
     .contact-section .scroll-section-text {
         width: 100% !important;
         max-width: 500px !important;
@@ -2070,7 +2066,6 @@ textarea.form-control {
         order: 1 !important;
     }
 
-    /* Social media section - positioned under form */
     .contact-section .scroll-section-container>div:last-child>div:first-child {
         width: 100% !important;
         display: flex !important;
@@ -2081,7 +2076,6 @@ textarea.form-control {
         order: 2 !important;
     }
 
-    /* Social media icons container - enhanced for mobile */
     .contact-section .scroll-section-container>div:last-child>div:first-child>div:last-child {
         width: 100% !important;
         margin-top: 0 !important;
@@ -2093,7 +2087,6 @@ textarea.form-control {
     }
 }
 
-/* About Us section*/
 #about-section {
     align-items: start;
     padding-top: 9rem;
