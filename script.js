@@ -484,7 +484,7 @@ function createBasketballCourt() {
 
   const gridHelper = new THREE.GridHelper(courtLength, 20, 0x1a237e, 0x1a237e);
   gridHelper.material.transparent = true;
-  gridHelper.material.opacity = 0.6;
+  gridHelper.material.opacity = 0.1;
   gridHelper.position.set(0, 0.01, gridOffsetZ);
   scene.add(gridHelper);
 
@@ -653,7 +653,7 @@ function createShotFrequencyPillars() {
     shotData.push({
       x: x,
       z: z,
-      frequency: 5 + Math.random() * 25,
+      frequency: 5 + Math.random() * 40,
       efficiency: 0.25 + Math.random() * 0.2,
     });
   }
@@ -681,7 +681,7 @@ function createShotFrequencyPillars() {
     }
 
     // Create pillar with smaller radius for more instances
-    const pillarGeometry = new THREE.CylinderGeometry(0.15, 0.2, height, 8);
+    const pillarGeometry = new THREE.CylinderGeometry(0.12, 0.12, height, 8);
     const pillarMaterial = new THREE.MeshLambertMaterial({
       color: color,
       transparent: true,
@@ -692,7 +692,7 @@ function createShotFrequencyPillars() {
     pillar.castShadow = true;
 
     // Add subtle glow effect with PSG colors
-    const glowGeometry = new THREE.CylinderGeometry(0.2, 0.25, height + 0.1, 8);
+    const glowGeometry = new THREE.CylinderGeometry(0.13, 0.13, height + 0.1, 8);
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: color,
       transparent: true,
@@ -727,7 +727,7 @@ function setupScrollTrigger() {
       if (cameraAnimation) cameraAnimation.kill();
 
       cameraAnimation = gsap.to(camera.position, {
-        duration: 2,
+        duration: 3,
         ease: "power2.inOut",
         x: 15,
         y: 12,
@@ -773,8 +773,8 @@ function animatePillarsIn() {
       { y: 0 },
       {
         y: 1,
-        duration: 0.6,
-        delay: 0,
+        duration: 3,
+        delay: 1,
         ease: "power2.out",
       }
     );
@@ -783,8 +783,8 @@ function animatePillarsIn() {
       { y: 0 },
       {
         y: 1,
-        duration: 0.6,
-        delay: 0,
+        duration: 3,
+        delay: 1,
         ease: "power2.out",
       }
     );
