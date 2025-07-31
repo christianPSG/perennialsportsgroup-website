@@ -1162,18 +1162,18 @@ function updateChartJsRadar(progress, position) {
     // Conference Average (dataset 2) - 25-50% progress
     const conferenceProgress = Math.max(
       0,
-      Math.min(1, (progress - 0.25) / 0.25)
+      Math.min(1, (progress - 0.1) / 0.25)
     );
     datasets[2].data = originalData[2].map(
       (value) => value * conferenceProgress
     );
 
     // Elite Threshold (dataset 3) - 50-75% progress
-    const eliteProgress = Math.max(0, Math.min(1, (progress - 0.5) / 0.25));
+    const eliteProgress = Math.max(0, Math.min(1, (progress - 0.2) / 0.25));
     datasets[3].data = originalData[3].map((value) => value * eliteProgress);
 
     // Sample Player (dataset 0) - 75-100% progress
-    const playerProgress = Math.max(0, Math.min(1, (progress - 0.75) / 0.25));
+    const playerProgress = Math.max(0, Math.min(1, (progress - 0.3) / 0.25));
     datasets[0].data = originalData[0].map((value) => value * playerProgress);
 
     // Update chart with smooth animation
